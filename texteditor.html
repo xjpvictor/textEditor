@@ -1,0 +1,133 @@
+
+<div class="textEditor">
+
+<p id="edit-form-toggle" class="edit-pointer" onclick="editFormToggle(1);">Edit</p>
+
+<form id="edit-form" spellcheck="false" onsubmit="event.preventDefault();event.stopPropagation();">
+
+  <!-- Buttons -->
+  <div id="edit-buttons">
+    <div>
+
+    <span id-title="Heading 1" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHR('====')">H1</span>
+    <span id-title="Heading 2" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHR('----')">H2</span>
+    <span id-title="Heading 3" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('### ')">H3</span>
+    <span id-title="Heading 4" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('#### ')">H4</span>
+    <span id-title="Heading 5" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('##### ')">H5</span>
+    <span id-title="Heading 6" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('###### ')">H6</span>
+    <span id-title="Italic" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('_')"><span style="font-style:italic;">i</span></span>
+    <span id-title="Bold" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('**')"><span style="font-weight:bold;">b</span></span>
+    <span id-title="Unordered list" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('- ')">&middot; -</span>
+    <span id-title="Ordered list" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('1. ')">1. -</span>
+    <span id-title="Blockquote" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('> ')">&gt;</span>
+    <span id-title="Inline code" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('`')">code</span>
+    <span id-title="Code block" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHead('    ')">&lt;/&gt;</span>
+    <span id-title="url" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddURL('', false, '', '', true)">url</span>
+    <span id-title="Add break" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddHR('\n***\n')">---</span>
+    <span id-title="Add &amp;lt;div&amp;gt;" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;div&gt;', '&lt;/div&gt;')">&lt;div&gt;</span>
+    <span id-title="Add &amp;lt;div&amp;gt; with MD support" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('\n&lt;div markdown=&quot;1&quot;&gt;\n', '\n&lt;/div&gt;\n')">&lt;md&gt;</span>
+    <span id-title="Add &amp;lt;span&amp;gt;" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;span&gt;', '&lt;/span&gt;')">&lt;span&gt;</span>
+    <span id-title="Set class" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;span class=&quot;&quot;&gt;', '&lt;/span&gt;')">class</span>
+    <span id-title="Set style" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;span style=&quot;&quot;&gt;', '&lt;/span&gt;')">style</span>
+    <div class="edit-clear">&nbsp;</div>
+
+    </div>
+  </div>
+  <!-- End of Buttons -->
+
+  <!-- Title -->
+  <div id="edit-title" data-defaultText="HTML/Markdown"></div>
+  <!-- End of Title -->
+
+  <!-- Options -->
+  <div id="edit-options">
+    <span id-title="img" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="showImgUploader();">&#127750;</span>
+
+    <!-- Custom buttons -->
+    <span id="edit-custom-buttons"></span>
+
+    <div class="edit-clear">&nbsp;</div>
+  </div>
+  <!-- End of Options -->
+
+  <div class="edit-clear">&nbsp;</div>
+
+  <!-- Image uploader -->
+  <div id="edit-imageuploader">
+
+    <h2>Image Uploader</h2>
+    <div class="edit-pointer" title="Close" id="edit-imageuploaderclose" onclick="hideImgUploader();">&#10005;</div>
+    <br>
+
+    <!-- Direct link -->
+    <p>Enter url of image to insert &lt;img&gt;</p>
+    <p><input type="text" class="edit-input-text" name="img_url" onkeydown="if(event.keyCode==13){event.stopPropagation();event.preventDefault();mdAddImg(this.value, 'Untitled', 'image');this.value='';}" /> <input type="submit" class="edit-input-submit" onclick="mdAddImg(editform.elements['img_url'].value, 'Untitled', 'image');editform.elements['img_url'].value='';" value="Insert" /></p>
+    <br>
+
+    <!-- Local file upload -->
+    <div id="edit-imageuploaderlocal">
+
+      <p>Or drop local file below</p>
+
+      <div id="edit-upload-drop" class="edit-upload-drop" ondrop="uploadFileSelectHandler(event);">
+        <div id="edit-upload-button-wrap" class="edit-upload-button-wrap edit-pointer">
+          <span id="edit-upload-button" class="edit-upload-button edit-pointer">Open file</span>
+          <span id="edit-upload-file-button-wrap" class="edit-upload-file-button-wrap edit-pointer">
+            <input type="file" multiple id="edit-upload-file-button" class="edit-upload-file-button edit-pointer" name="files[]" onchange="uploadFileSelectHandler(event, this);" />
+          </span>
+          <div class="edit-clear">&nbsp;</div>
+        </div>
+      </div>
+      <br>
+
+    </div>
+
+    <!-- Unsplash -->
+    <div id="edit-imageuploaderunsplash">
+      <h3>Search on Unsplash</h3>
+      <p><input type="text" class="edit-input-text" name="img_unsplash" onfocus="if(editAllowRecaptcha && false === editimageuploaderunsplashrecaptchawidgetid){editimageuploaderunsplashrecaptchawidgetid=grecaptcha.render(editimageuploaderunsplashrecaptchaelementid);}" onblur="if(!this.value){editSearchUnsplashValidate();}" onkeydown="if(event.keyCode==13){event.stopPropagation();event.preventDefault();editSearchUnsplashValidate();}" /> <input type="submit" class="edit-input-submit" onclick="editSearchUnsplashValidate();" value="Search" /></p>
+
+      <!-- Recaptcha -->
+      <div id="edit-imageuploaderunsplash-recaptcha" class="edit-recaptcha">
+        <p class="edit-grey edit-recaptcha">Protected by reCAPTCHA and the Google
+          <a class="edit-grey" href="https://policies.google.com/privacy">Privacy Policy</a> and
+          <a class="edit-grey" href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+      </div>
+
+      <div id="edit-imageuploaderunsplashimages"></div>
+    </div>
+
+  </div>
+  <!-- End of Image uploader -->
+
+  <!-- Textarea -->
+  <div id="edittextareasnapwrap"><p id="edittextareasnap"></p><div id="edittextareasnaplocator"></div></div>
+  <div id="edit-textarea-shader-top"></div>
+  <div id="edit-textarea-shader-bottom"></div>
+  <textarea id="edit-textarea" autocomplete="off" autocorrect="off"></textarea>
+  <!-- End of Textarea -->
+
+  <!-- Status bar -->
+  <div id="edit-status-bar">
+    <span class="edit-status" id="edit-status-word-count">Updating...</span>
+  </div>
+
+  <!-- Options -->
+  <div id="edit-file-options">
+    <span class="edit-previewnoimagename edit-upload-drop edit-button edit-pointer" id-title="Import" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')"><span class="edit-upload-button-wrap edit-pointer"><span class="edit-upload-button edit-pointer">&#128228;</span><span class="edit-upload-file-button-wrap edit-pointer"><input type="file" multiple accept="" class="edit-upload-file-button edit-pointer" name="files[]" onchange="uploadFileSelectHandler(event, this, true);"></span><span class="edit-clear">&nbsp;</span></span></span>
+    <span id-title="Save" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="editexport();">&#128190;</span>
+    <span id-title="Preview" id="edit-form-toggle-off" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="editFormToggle(0);">&#128506;</span>
+  </div>
+
+  <div class="edit-clear">&nbsp;</div>
+
+  <div id="edithtmlentities" style="display:none;"></div>
+  <a id="editdownload" style="display:none;"></a>
+  <p id="edittextareaplace"></p>
+
+  <div class="edit-clear">&nbsp;</div>
+
+</form>
+
+</div>
+

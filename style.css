@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarala&display=swap');
+
+.textEditor{position:relative;}
+.textEditor .edit-clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0;}
+.textEditor a:hover,.textEditor .edit-pointer:hover{cursor:pointer !important;}
+.textEditor .edit-grey,.textEditor a.edit-grey{color:#a9a9a9;}
+input.edit-input-text{appearance:none;-webkit-appearance:none;-moz-appearance:none;padding:0px 3px;border:.5px solid #aaa;border-radius:0;box-sizing:border-box;width:100%;max-width:300px;margin:0 0 5px;}
+input.edit-input-text:disabled,input.edit-input-text:read-only{background:#eee;}
+input.edit-input-checkbox{display:none;}
+input.edit-input-checkbox+.edit-labelText{color:#000;}
+input.edit-input-checkbox+.edit-labelText::before{display:inline-block;width:15px;height:15px;padding:0;margin:0 8px 0 0;font-size:10px;line-height:15px;text-align:center;border-radius:2px;box-shadow:0 0 1px #aaa;box-sizing:border-box;content:"-";color:#000;background:#ddd;}
+input.edit-input-checkbox+.edit-labelText.edit-alignMiddle::before{vertical-align:middle;}
+input.edit-input-checkbox:checked+.edit-labelText::before{content:"\2713";color:#fff;background:#4caf50;}
+input.edit-input-checkbox:disabled+.edit-labelText::before{color:#fff;background:#ccc;}
+input.edit-input-checkbox:disabled+.edit-labelText{color:#999;}
+.edit-labelText>span{display:inline-block;vertical-align:middle;}
+input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:none;color:#fff;background:#4285f1;text-align:center;line-height:20px;border:none;border-radius:2px;padding:3px 10px 4px;margin:0;vertical-align:middle;font-size:13px;box-shadow:0 1px 3px 0 #e6ebf1;}
+
+/*
+ * Textarea
+ */
+
+.textEditor #edit-textarea,.textEditor #edit-buttons,.textEditor #edit-title,.textEditor #edit-options,.textEditor #edit-status-bar,.textEditor #edit-imageuploader,.textEditor #edit-file-options{box-sizing:border-box;}
+
+.textEditor #edit-form{border:.5px solid #a9a9a9;overflow:hidden;position:relative;margin-top:.5px;}
+
+/* edit-form toggle */
+.textEditor #edit-form-toggle{display:none;padding:10px;color:#fff;background:#d42;box-shadow:0 0 1px 1px #e9e9e9;border-radius:2px;text-align:center;}
+.textEditor #edit-form-toggle-off{display:none;}
+
+/* textarea */
+.textEditor #edit-textarea,.textEditor #edittextareaplace{display:block;border:0;border-radius:0;margin:0;width:100%;padding:0 5px;}
+
+.textEditor #edit-textarea{appearance:none;-webkit-appearance:none;-moz-appearance:none;resize:none;min-height:60vh;max-height:60vh;vertical-align:baseline;padding-bottom:40vh;background-image:linear-gradient(transparent, transparent 25px, #e6ebf194 0px);background-size:100% 26px;background-attachment:local;overflow-y:auto;caret-color:#ff6500;scroll-behavior:smooth;}
+.textEditor #edit-textarea::-webkit-scrollbar{width:0;}
+
+.textEditor #edittextareaplace{position:absolute;z-index:2;top:0;left:0;opacity:0;pointer-events:none;box-sizing:border-box;}
+
+.textEditor #edit-textarea,.textEditor #edittextareaplace,.textEditor #edittextareasnap{font-size:15px;line-height:26px;font-family:'Sarala',sans-serif;white-space:pre-wrap;word-spacing:0;overflow-wrap:break-word;letter-spacing:normal;}
+
+/* snapshot */
+.textEditor #edittextareasnapwrap{display:block;opacity:0;position:fixed;z-index:9;top:10px;bottom:10px;right:10px;width:80px;min-height:100px;padding:5px;overflow:auto;background:#fff;border:1px solid #ff6500;box-shadow:0 0 5px 2px #ccc;border-radius:3px;pointer-events:none;transition:all .3s ease 0s;}
+.textEditor #edittextareasnapwrap::-webkit-scrollbar{width:0;}
+.textEditor #edittextareasnapwrap.edit-show{opacity:1;}
+.textEditor #edittextareasnap{width:100%;padding:0;margin:0;}
+.textEditor #edittextareasnaplocator{position:absolute;width:90px;margin-left:-5px;top:0;bottom:100%;box-sizing:border-box;background:rgba(0,0,0,.2);}
+
+/* textarea shader */
+.textEditor #edit-textarea-shader-top,.textEditor #edit-textarea-shader-bottom{position:absolute;height:0;left:0;right:0;z-index:2;background:#fff;pointer-events:none;opacity:.5;box-shadow:0 0 3px 3px #fff;}
+.textEditor #edit-textarea-shader-top{top:0;}
+.textEditor #edit-textarea-shader-bottom{bottom:0;}
+
+/* button bar and button title */
+.textEditor #edit-buttons,.textEditor #edit-title,.textEditor #edit-status-bar{width:100%;background:#fff;padding:5px;border:0;display:block;}
+.textEditor #edit-buttons,.textEditor #edit-title{border-bottom:.5px solid #a9a9a9;}
+.textEditor #edit-status-bar{border-top:.5px solid #a9a9a9;}
+
+/* buttons */
+.textEditor .edit-button{display:block;float:left;color:#000;font-size:13px;width:auto;padding-right:12px;height:30px;line-height:30px;text-align:center;}
+.textEditor>.edit-button:first-child{padding-right:5px;}
+
+/* title */
+.textEditor #edit-title{color:#999;font-size:13px;padding:5px 200px 5px 10px;float:left;margin-right:-200px;height:32px;}
+
+/* options */
+.textEditor #edit-options{float:right;width:200px;height:32px;padding:5px;}
+.textEditor #edit-options .edit-button{float:right;line-height:22px;font-size:16px;}
+.textEditor #edit-options #edit-custom-buttons .edit-button{font-size:13px;}
+
+/* status bar */
+.textEditor #edit-status-bar{font-size:12px;color:#888;padding-top:1px;padding-bottom:1px;padding-right:120px;margin-right:-120px;float:left;}
+.textEditor #edit-status-bar .edit-status{font-size:inherit;}
+
+/* file options */
+.textEditor #edit-file-options{float:right;width:120px;height:25px;padding:0 0 0 5px;}
+.textEditor #edit-file-options .edit-button{float:right;line-height:25px;font-size:16px;}
+.textEditor #edit-file-options .edit-button.edit-upload-drop .edit-upload-button{padding:0;line-height:22px;}
+
+/* imageuploader */
+.textEditor #edit-imageuploader{position:fixed;top:0;bottom:0;left:0;right:0;z-index:999;display:none;background:#fff;padding:10px;border:.5px solid #a9a9a9;border-top-width:4px;border-top-color:#000;overflow:hidden;overflow-y:auto;}
+.textEditor #edit-imageuploader::-webkit-scrollbar{width:0;}
+.textEditor #edit-imageuploader.edit-show{display:block;}
+.textEditor #edit-imageuploaderclose{width:20px;height:20px;position:absolute;right:5px;top:5px;text-align:center;line-height:20px;}
+
+.textEditor #edit-imageuploaderunsplash{display:none;}
+.textEditor #edit-imageuploaderunsplash.edit-show{display:block;}
+.textEditor .edit-imageuploaderunsplashImageWrappers{position:relative;display:inline-block;width:200px;height:200px;margin:0 1% 2px 0;overflow:hidden;padding-top:0;}
+.textEditor .edit-imageuploaderunsplashImages{width:100% !important;height:100% !important;object-fit:cover !important;position:absolute !important;top:0 !important;bottom:0 !important;left:0 !important;right:0 !important;margin:0 !important;}
+.textEditor .edit-imageuploaderunsplashImageLinks{position:absolute;left:0;bottom:0;background:rgba(255,255,255,.8);width:100%;color:#ff6500;text-align:center;padding:3px 0;}
+.textEditor .edit-imageuploaderunsplashImageLoader{display:block;padding:10px;text-align:center;color:#ff6500;}
+
+.textEditor .edit-recaptcha{display:none;}
+.textEditor .edit-allow-recaptcha .edit-recaptcha{display:block;}
+.textEditor .edit-recaptcha p{padding-bottom:1em;}
+.textEditor .edit-recaptcha p,.textEditor .edit-recaptcha a{font-size:12px;}
+.grecaptcha-badge{visibility:hidden;z-index:3;}
+
+.textEditor #edit-imageuploaderlocal{display:none;}
+.textEditor #edit-imageuploaderlocal.edit-show{display:block;}
+.textEditor .edit-upload-drop{display:block;}
+.textEditor .edit-upload-drop:not(.edit-previewnoimagename){border:3px dashed #ddd;margin:0;padding:50px 10px;}
+.textEditor .edit-upload-drop:not(.edit-previewnoimagename).edit-upload-drag{border-color:#ff6500;box-shadow:0 0 2px #d42;}
+.textEditor .edit-upload-drop .edit-upload-button-wrap{position:relative;display:block;}
+.textEditor .edit-upload-drop:not(.edit-previewnoimagename) .edit-upload-button-wrap{padding:0;margin:0 auto;box-shadow:0 0 1px #333;background:#eee;width:100px;}
+.textEditor .edit-upload-drop:not(.edit-previewnoimagename) .edit-upload-button-wrap:hover{background:#ddd;}
+.textEditor .edit-upload-drop .edit-upload-button{width:100%;height:1.3em;line-height:1.3em;padding:10px 0;margin:0 auto;text-align:center;border:none;background-color:transparent;display:inline-block;cursor:pointer;float:right;}
+.textEditor .edit-upload-drop .edit-upload-file-button-wrap{position:absolute;opacity:0;top:0;right:0;width:100%;height:100%;border:none;margin:0;padding:0;z-index:2;}
+.textEditor .edit-upload-drop .edit-upload-file-button{width:100%;height:100%;border:none;margin:0;padding:0;}
+
+/*
+ * Preview box
+ */
+
+.textEditor #edit-preview-wrap{min-height:70vh;height:70vh;max-height:70vh;overflow-x:hidden;overflow-y:auto;scroll-behavior:smooth;}
+.textEditor #edit-preview{min-height:calc(70vh - 40px);outline:none;caret-color:transparent;margin:0 2px;padding-bottom:40px;}
+.textEditor #edit-preview,.textEditor #edit-preview *{cursor:default;}
+.textEditor #edit-preview.edittyping:after{content:attr(data-placeholder);position:absolute;bottom:0;left:0;z-index:2;width:100px;padding:2px 5px;background:linear-gradient(90deg,white 50%,transparent);color:#666;}
+.textEditor #edit-preview-wrap::-webkit-scrollbar{width:0;}
+.textEditor #edit-preview .edit-previewnoimage{font-weight:bold;color:#d42;border:1px solid #000;padding:20px;box-sizing:border-box;width:100%;display:block;text-align:center;}
+.textEditor #edit-preview .edit-previewnoimagename{color:#000;}
+.textEditor #edit-preview p:empty{display:none;}
+.textEditor #edit-preview figure p{padding:0;margin:0;}
+.textEditor #edit-preview p.edit-positioners{display:block !important;width:0 !important;height:0 !important;margin:0 !important;padding:0 !important;}
+.textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners){position:relative;}
+.textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners):before{content:'';display:block;width:0;height:100%;position:absolute;top:0;left:-1px;z-index:2;border-left:3px solid #ff6500eb;}
+.textEditor #edit-preview p.edit-preview-caret-current:not(.edit-positioners):empty{display:block;border-left:0;border-bottom:1px solid #ff6500;width:100%;margin-top:-.45em;margin-bottom:calc(.35em + .5px);}
+.textEditor #edit-preview .edit-position-buttons{position:relative;}
+.textEditor #edit-preview .edit-position-buttons:hover{cursor:default;}
+.textEditor #edit-preview .edit-position-buttons:after{content:'';display:none;width:10px;height:10px;position:absolute;background:rgba(255,101,0,.5);border-radius:50%;right:5px;top:5px;z-index:2;border:.5px solid rgba(255,101,0,.8);box-shadow:0 0 1px 1px rgba(255,101,0,.3);}
+.textEditor #edit-preview .edit-position-buttons:hover:after{display:block;cursor:pointer;}
+
+/*
+ * Mobile device
+ */
+
+body.texteditor-mobile-device .textEditor #edit-form{position:fixed;top:0;bottom:0;left:0;right:0;z-index:999;background:#fff;margin-top:0;pointer-events:none;opacity:0;transition:opacity .1s ease 0s;}
+body.texteditor-mobile-device .textEditor #edit-form.editing{opacity:1;pointer-events:all;}
+body.texteditor-mobile-device .textEditor #edit-form-toggle{display:block;}
+body.texteditor-mobile-device .textEditor #edit-form-toggle-off{display:block;}
+body.texteditor-mobile-device .textEditor #edittextareasnapwrap{display:none;}
+body.texteditor-mobile-device .textEditor #edit-buttons{overflow-x:scroll;padding-left:20px;}
+body.texteditor-mobile-device .textEditor #edit-buttons:before,body.texteditor-mobile-device .textEditor #edit-buttons:after{content:'';position:fixed;top:0;z-index:2;height:55.5px;}
+body.texteditor-mobile-device .textEditor #edit-buttons:before{width:30px;left:0;background:linear-gradient(90deg,#fff 20%,rgba(255,255,255,.7) 20%,rgba(255,255,255,.3));}
+body.texteditor-mobile-device .textEditor #edit-buttons:after{width:50px;right:0;background:linear-gradient(-90deg,#fff 20%,rgba(255,255,255,.7) 20%,rgba(255,255,255,.3));}
+body.texteditor-mobile-device .textEditor #edit-buttons div{width:1200px;}
+body.texteditor-mobile-device .textEditor #edit-buttons span{min-width:38px;height:45px;line-height:45px;font-weight:bold;padding-right:20px;}
+body.texteditor-mobile-device .textEditor #edit-title,body.texteditor-mobile-device .textEditor #edit-options{height:45px;line-height:35px;}
+body.texteditor-mobile-device .textEditor #edit-options .edit-button{font-size:20px;line-height:35px;}
+body.texteditor-mobile-device .textEditor #edit-status-bar,body.texteditor-mobile-device .textEditor #edit-file-options{padding-top:5px;padding-bottom:5px;}
+body.texteditor-mobile-device .textEditor #edit-textarea{background:none;padding-bottom:10px;min-height:50vh;max-height:none;outline:none;}
+body.texteditor-mobile-device .textEditor #edit-textarea,body.texteditor-mobile-device .textEditor #edittextareaplace{padding-top:10px;}
+body.texteditor-mobile-device .textEditor #edit-textarea-shader-top,body.texteditor-mobile-device .textEditor #edit-textarea-shader-bottom{display:none;}
+body.texteditor-mobile-device .textEditor #edit-imageuploaderclose{font-size:20px;width:35px;height:35px;line-height:35px;}
+body.texteditor-mobile-device .textEditor #edit-preview-wrap{height:fit-content;min-height:fit-content;max-height:fit-content;overflow:visible;}
+body.texteditor-mobile-device .textEditor #edit-preview img{border:none;box-shadow:none;}
+body.texteditor-mobile-device .textEditor #edit-preview.edittyping:after{display:none;}
+body.texteditor-mobile-device .textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners):before,body.texteditor-mobile-device .textEditor #edit-preview p.edit-preview-caret-current:not(.edit-positioners):empty,body.texteditor-mobile-device .textEditor #edit-preview .edit-position-buttons:after,body.texteditor-mobile-device .textEditor #edit-preview .edit-position-buttons:hover:after{display:none;}
+
+@media screen and (max-width:800px) {
+.textEditor .edit-imageuploaderunsplashImageWrappers{width:32%;height:0;padding-top:32%;}
+}
+
+@media screen and (max-width:450px) {
+.textEditor .edit-imageuploaderunsplashImageWrappers{width:49%;padding-top:49%;}
+}
