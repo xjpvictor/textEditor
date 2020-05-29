@@ -16,7 +16,7 @@ var edittitle = document.getElementById('edit-title');
 var editimageuploader = document.getElementById('edit-imageuploader');
 const editstoragecaretpositionname = 'edit-caret-position';
 
-const editimagetype = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+const editimagetype = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
 const editpreviewpositioneridprefix = 'edit-positioner-';
 const editpreviewpositionerclass = 'edit-positioners';
 const editpreviewpositionbuttonclass = 'edit-position-buttons';
@@ -74,18 +74,58 @@ edittextarea.onkeydown = function(e) {
     // Esc
     this.blur();
   } else if (k == 'Enter') {
-    // Enter key auto add prefix including 4 spaces, >, -, numbered list
-    var regexp = new RegExp('^((    )|(> )|(- )|(([0-9]+). ))');
+    // Enter key auto add prefix including 4 spaces, >, -, *, +, numbered list
+    var regexp = new RegExp('^((    )|(> )|(- )|(\\* )|(\\+ )|(([0-9]+). ))');
     if ((str = this.value.substring(this.value.substring(0, s).lastIndexOf("\n")+1).match(regexp)) !== null) {
       e.preventDefault();
-      if (typeof str[6] !== 'undefined') {
-        str = parseInt(str[6])+1+'. ';
+      if (typeof str[8] !== 'undefined') {
+        str = parseInt(str[8])+1+'. ';
       } else {
         str = str[1];
       }
       this.value = this.value.substring(0, s) + "\n" + str + this.value.substring(this.selectionEnd);
       this.selectionEnd = s+str.length+1;
     }
+  } else if (k == 'b' && e.ctrlKey == true) {
+    // ctrl-b
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddStyle('**');
+  } else if (k == 'i' && e.ctrlKey == true) {
+    // ctrl-i
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddStyle('_');
+  } else if (k == '1' && e.ctrlKey == true) {
+    // ctrl-1
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddHR('====');
+  } else if (k == '2' && e.ctrlKey == true) {
+    // ctrl-2
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddHR('----');
+  } else if (k == '3' && e.ctrlKey == true) {
+    // ctrl-3
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddHead('### ');
+  } else if (k == '4' && e.ctrlKey == true) {
+    // ctrl-4
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddHead('#### ');
+  } else if (k == '5' && e.ctrlKey == true) {
+    // ctrl-5
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddHead('##### ');
+  } else if (k == '6' && e.ctrlKey == true) {
+    // ctrl-6
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddHead('###### ');
   } else if (k == '{') {
     // {
     e.preventDefault();
@@ -482,7 +522,7 @@ function uploadFileSelectHandler(e, input = false, fn = '') {
             i++;
             return function(filename, i, n) {
               zip.file(filename).async('blob').then(function(content) {
-                if (editimagetype.indexOf((t = filename.substring(filename.lastIndexOf('.')+1))) !== -1) {
+                if (editimagetype.indexOf((t = filename.substring(filename.lastIndexOf('.')+1))) > -1) {
                   var f = new File([content], filename, {type: 'image/'+t});
                 } else
                   var f = new File([content], filename);
@@ -512,7 +552,7 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
   reader.onload = (function(name, type, size, lastMod, i, n, fn) {
     return function(e) {
 
-      editdbtxn((editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) !== -1 ? editdbimgstorename : editdbfilestorename)).add({'name': (fn === true ? name : (fn ? fn : name)), 'Value': {'data': e.target.result, 'timestamp': getTS()}});
+      editdbtxn((editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? editdbimgstorename : editdbfilestorename)).add({'name': (fn === true ? name : (fn ? fn : name)), 'Value': {'data': e.target.result, 'timestamp': getTS()}});
       if (fn === true && (name.indexOf('.md') == name.length - 3 || name.indexOf('.markdown') == name.length - 9)) {
         var blob = new Blob([e.target.result]);
         var mdf = new FileReader();
@@ -521,7 +561,7 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
         };
         mdf.readAsText(blob);
       } else
-        mdAddImg((fn === true ? false : (fn ? '' : name)), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) !== -1 ? true : false));
+        mdAddImg((fn === true ? false : (fn ? '' : name)), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? true : false));
 
       if (i < n-1)
         uploadFileSelectHandlerFileReader(reader, files, i+1, n, fn, input, preview);
@@ -538,7 +578,7 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
     };
   })(name, type, size, lastMod, i, n, fn);
 
-  if (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) !== -1)
+  if (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1)
     reader.readAsDataURL(f);
   else
     reader.readAsArrayBuffer(f);
