@@ -296,7 +296,7 @@ function editshowPreviewImageNotFound(html) {
     var elem = document.createElement('div');
     elem.innerHTML = previewhtml;
     editpreview.appendChild(elem);
-    setTimeout(function(){editautoUpdate();editSyntaxHighlight();},10);
+    setTimeout(function(){editautoUpdate();editSyntaxHighlight();renderMathInElement(editpreview);},10);
 
     wstr = editpreview.innerHTML.trim().replace(/<[^>]+>/gmi, '').trim();
     document.getElementById('edit-status-word-count').innerHTML = 'Word: ' + (!wstr.length ? 0 : wstr.split(/[\r\n\t\s]+/gmi).length) + ' Characters: ' + wstr.replace(/[\r\n]+[\s\t]+/gmi, '').replace(/[\s\t]+[\r\n]+/gmi, '').replace(/[\t]+/gmi, ' ').replace(/[\r\n]+/gmi, '').length;
@@ -836,6 +836,7 @@ edittextarea.addEventListener('keydown', function(e) {
 });
 
 function editautoUpdate() {
+
   clearTimeout(editautoUpdateTimeout);
 
   editautoUpdateTimeout = setTimeout(function() {
@@ -856,11 +857,10 @@ function editautoUpdate() {
       // Scroll preview
       editautoScroll();
       editpreview.classList.remove('edittyping');
-      // Render Katex
-      renderMathInElement(editpreview);
     }
 
   }, 500);
+
 }
 
 edittextarea.addEventListener('keyup', editautoUpdate);
