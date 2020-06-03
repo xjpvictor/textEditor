@@ -15,6 +15,8 @@ var editcustombuttonholder = document.getElementById('edit-custom-buttons');
 var edittitle = document.getElementById('edit-title');
 var editimageuploader = document.getElementById('edit-imageuploader');
 const editstoragecaretpositionname = 'edit-caret-position';
+const editstoragemdtitlename = 'edit-md-title';
+var editmdtitle = (typeof document.getElementById('textEditorTitle') != 'undefined' && null !== document.getElementById('textEditorTitle') && document.getElementById('textEditorTitle') ? document.getElementById('textEditorTitle') : false);
 
 const editimagetype = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
 const editpreviewpositioneridprefix = 'edit-positioner-';
@@ -592,6 +594,13 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
 
 // Save
 
+function editGetMdSuffix(str) {
+  return (str.toLowerCase().substr(-3) == '.md' ? str : str+'.md');
+}
+function editGetMdTitle(show_default = true) {
+  return (editmdtitle && typeof editmdtitle.value != 'undefined' && null !== editmdtitle.value && editmdtitle.value ? editGetMdSuffix(editmdtitle.value) : (show_default ? 'post.md' : false));
+}
+
 function editdownload(blob, name) {
 
   link = document.getElementById('editdownload');
@@ -612,7 +621,7 @@ function editdownload(blob, name) {
 function editexport() {
 
   var zip = new JSZip();
-  zip.file('post.md', edittextarea.value);
+  zip.file(editGetMdTitle(), edittextarea.value);
 
   var requestFile = editdbtxn(editdbfilestorename);
   requestFile.getAll().onsuccess = function(e) {
@@ -967,5 +976,19 @@ if (window.indexedDB) {
     var editdbimgStore = editdb.createObjectStore(editdbimgstorename, {keyPath: 'name'});
     var editdbfileStore = editdb.createObjectStore(editdbfilestorename, {keyPath: 'name'});
   }
+}
+
+if (editmdtitle && window.localStorage) {
+
+  if (!editGetMdTitle(0))
+    editmdtitle.value = editGetMdSuffix(window.localStorage.getItem(editstoragemdtitlename));
+  else
+    window.localStorage.setItem(editstoragemdtitlename, editGetMdSuffix(editmdtitle.value));
+
+  editmdtitle.addEventListener('change', function(e){
+    editmdtitle.value = editGetMdSuffix(editmdtitle.value);
+    window.localStorage.setItem(editstoragemdtitlename, editGetMdTitle());
+  });
+
 }
 

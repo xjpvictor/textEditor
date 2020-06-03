@@ -65,6 +65,8 @@ var editCustomButtons = [
 </script>
 ```
 
+You can optionally create an `<input>` with `id="extEditorTitle"` and when exporting, the .md file will be named after the value in that input field
+
 ### preview
 
 Create a `<div>` with `id="textPreview"` for the preview panel
