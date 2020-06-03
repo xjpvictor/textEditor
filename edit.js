@@ -315,6 +315,11 @@ function mdAddPositioner(str) {
   mdAddPositionerOutputStr = '';
   editpreviewpositions = [0];
 
+  str.replace(/^([\r\n\s]*)---([\r\n]+)((.(?!(\.\.\.)))*.)\.\.\.([\r\n]*)/si, function(match) {
+    mdAddPositionerStartIndex = match.length - 2;
+    mdAddPositionerOutputStr = '<p style="display:none;"></p>';
+    return match;
+  });
   while (mdAddPositionerCondition) {
     mdAddPositionerCondition = false;
     str.substring(mdAddPositionerStartIndex).replace(reg, function(match, p1, offset, string) {
@@ -600,7 +605,7 @@ function editdownload(blob, name) {
   link.download = name;
   link.click();
 
-  URL.createObjectURL(objectURL);
+  URL.revokeObjectURL(objectURL);
 
 }
 
@@ -630,6 +635,22 @@ function editexport() {
       .then(function(blob) {
         var d = new Date();
         editdownload(blob, "textEditor_export_"+d.getFullYear()+'-'+('0'+d.getMonth()).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+".zip");
+
+        if (false) {
+          //todo
+          var f = new FormData();
+          f.append('file', blob);
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", 'https://file.io');
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.responseText) {
+              data = JSON.parse(xhr.responseText);
+              //console.log(data['link']);
+            }
+          }
+          xhr.send(f);
+        }
+
       });
 
     }
