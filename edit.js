@@ -576,6 +576,8 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
           edittextarea.value = mdTextTrim(mdf.result);
         };
         mdf.readAsText(blob);
+        if (editmdtitle)
+          editmdtitle.value = editGetMdSuffix(name);
       } else
         mdAddImg((fn === true ? false : (fn ? '' : name)), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? true : false));
 
@@ -604,7 +606,7 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
 // Save
 
 function editGetMdSuffix(str) {
-  return (!str || str.toLowerCase().substr(-3) == '.md' ? str : str+'.md');
+  return (!str || str.toLowerCase().substr(-3) == '.md' || str.toLowerCase().substr(-9) == '.markdown' ? str : str+'.md');
 }
 function editGetMdTitle(show_default = true) {
   return (editmdtitle && typeof editmdtitle.value != 'undefined' && null !== editmdtitle.value && editmdtitle.value ? editGetMdSuffix(editmdtitle.value) : (show_default ? 'post.md' : ''));
