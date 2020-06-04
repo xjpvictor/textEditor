@@ -246,8 +246,6 @@ function mdAddHR(str = '') {
 
 function mdAddImg(url, title, alt, caption = '', showPreview = true, image = true) {
   if (url !== true && url) {
-    var a = edittextarea.selectionStart;
-    var d = edittextarea.selectionEnd;
     mdAddURL(url, image, title, alt, false, caption);
   }
   if (url !== true && !image) {
@@ -351,8 +349,9 @@ function editshowPreview() {
         var files = e.target.result;
         if (files.length) {
           files.forEach(function(file) {
-            if (html.indexOf('<a href="'+file.name+'"') !== -1) {
-              html = html.replace(new RegExp('<a href="'+file.name+'"', 'g'), '<a onclick="event.preventDefault();event.stopPropagation();" href="file://'+file.name+'"');
+            var fn_encoded = encodeURIComponent(file.name);
+            if (html.indexOf('<a href="'+fn_encoded+'"') !== -1) {
+              html = html.replace(new RegExp('<a href="'+fn_encoded+'"', 'g'), '<a onclick="event.preventDefault();event.stopPropagation();" href="file://'+fn_encoded+'"');
             } else {
               editdbtxn(editdbfilestorename).delete(file.name);
             }
@@ -363,8 +362,9 @@ function editshowPreview() {
           var imgs = e.target.result;
           if (imgs.length) {
             imgs.forEach(function(img) {
-              if (html.indexOf('<img src="'+img.name+'"') !== -1) {
-                html = html.replace(new RegExp('<img src="'+img.name+'"', 'g'), '<img src="'+img.Value.data+'" data-image-name="'+img.name+'"');
+              var fn_encoded = encodeURIComponent(img.name);
+              if (html.indexOf('<img src="'+fn_encoded+'"') !== -1) {
+                html = html.replace(new RegExp('<img src="'+fn_encoded+'"', 'g'), '<img src="'+img.Value.data+'" data-image-name="'+img.name+'"');
               } else if (html.indexOf('data-image-name="'+img.name+'"') === -1) {
                 editdbtxn(editdbimgstorename).delete(img.name);
               }
@@ -579,7 +579,7 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
         if (editmdtitle)
           editmdtitle.value = editGetMdSuffix(name);
       } else
-        mdAddImg((fn === true ? false : (fn ? '' : name)), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? true : false));
+        mdAddImg((fn === true ? false : (fn ? '' : encodeURIComponent(name))), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? true : false));
 
       if (i < n-1)
         uploadFileSelectHandlerFileReader(reader, files, i+1, n, fn, input, preview);
