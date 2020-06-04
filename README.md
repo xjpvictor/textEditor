@@ -104,6 +104,33 @@ Your server will then have to verify the code before returning the json result
 
 Google Recaptcha account needed
 
+## UPLOADING ZIP SUPPORT
+
+To upload zip file with `.md` file and all relevant images and binary files when clicking `Save` button, simply include the following in the aforementioned `<div id="textEditor">`
+```
+data-zip-uploader-url="" // The URL to upload the zip file to, if set, the zip file will be sent via "POST" request in "multipart/form-data" type
+data-zip-uploader-parameter="" // Optional, the parameter for the zip file, default to be "file"
+data-zip-uploader-credential="" // Optional, include credential header (cookie) with the POST request, default to be "false"
+data-zip-url="" // Optional, the URL to download the zip file, if set, the zip file will be downloaded via "GET" request and be imported on page load
+data-zip-url-credential="" // Optional, include credential header (cookie) with the GET request, default to be "false"
+```
+
+Optionally, you may also define a callback function as `editZipUploaderCallbackFunc` to be called once the uploading is finished
+
+```
+<script>
+const editZipUploaderCallbackFunc = function(text) {
+  if (text) {
+    console.log(text);
+  }
+}
+</script>
+```
+
+This is useful to upload the `.zip` file to ephemeral services such as [file.io](https://file.io) and send the resulting link to server for cross-device syncing service without eating up your server's disk space
+
+Note: [transfer.sh](https://transfer.sh) does not have an `access-control-allow-origin` header set, and sending `POST` requests from browser would be forbidden
+
 ## LICENSE
 
 MIT License

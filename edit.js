@@ -36,6 +36,10 @@ function getTS() {
   return Math.floor(Date.now() / 1000);
 }
 
+function isFunction(functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+}
+
 function editStringHtmlentities(str) {
   var h = document.getElementById("edithtmlentities");
   h.appendChild(document.createTextNode(str));
@@ -510,8 +514,11 @@ function uploadCancelDrag(e) {
 }
 
 function uploadFileSelectHandler(e, input = false, fn = '') {
-  uploadFileDragHover(e);
-  var files = e.target.files || e.dataTransfer.files;
+  if (typeof e.target != 'undefined' || typeof e.dataTransfer != 'undefined') {
+    uploadFileDragHover(e);
+    var files = e.target.files || e.dataTransfer.files;
+  } else
+    var files = e;
 
   if ((n = files.length)) {
     edittextarea.setSelectionRange(edittextarea.selectionEnd, edittextarea.selectionEnd);
@@ -519,27 +526,29 @@ function uploadFileSelectHandler(e, input = false, fn = '') {
 
     if (fn === true && n == 1 && files[0].name.substring(files[0].name.lastIndexOf('.')+1) === 'zip') {
       // Import zip
-      reader.onload = (function(e) {
-        var zip = new JSZip();
-        zip.loadAsync(e.target.result).then(function(contents) {
-          var i = 0;
-          var obj = Object.keys(contents.files);
-          var n = obj.length;
-          obj.forEach(function(filename) {
-            i++;
-            return function(filename, i, n) {
-              zip.file(filename).async('blob').then(function(content) {
-                if (editimagetype.indexOf((t = filename.substring(filename.lastIndexOf('.')+1))) > -1) {
-                  var f = new File([content], filename, {type: 'image/'+t});
-                } else
-                  var f = new File([content], filename);
-                uploadFileSelectHandlerFileReader(reader, [f], 0, 1, true, input, (i == n ? true : false));
-              });
-            }(filename, i, n);
+      if (!edittextarea.value.trim() || confirm('Overwrite the post?')) {
+        reader.onload = (function(e) {
+          var zip = new JSZip();
+          zip.loadAsync(e.target.result).then(function(contents) {
+            var i = 0;
+            var obj = Object.keys(contents.files);
+            var n = obj.length;
+            obj.forEach(function(filename) {
+              i++;
+              return function(filename, i, n) {
+                zip.file(filename).async('blob').then(function(content) {
+                  if (editimagetype.indexOf((t = filename.substring(filename.lastIndexOf('.')+1))) > -1) {
+                    var f = new File([content], filename, {type: 'image/'+t});
+                  } else
+                    var f = new File([content], filename);
+                  uploadFileSelectHandlerFileReader(reader, [f], 0, 1, true, input, (i == n ? true : false));
+                });
+              }(filename, i, n);
+            });
           });
         });
-      });
-      reader.readAsArrayBuffer(files[0]);
+        reader.readAsArrayBuffer(files[0]);
+      }
 
     } else
       uploadFileSelectHandlerFileReader(reader, files, 0, n, fn, input);
@@ -579,7 +588,7 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
           preview = true;
       }
 
-      if (preview)
+      if (preview && input)
         input.value = '';
 
     };
@@ -595,10 +604,14 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
 // Save
 
 function editGetMdSuffix(str) {
-  return (str.toLowerCase().substr(-3) == '.md' ? str : str+'.md');
+  return (!str || str.toLowerCase().substr(-3) == '.md' ? str : str+'.md');
 }
 function editGetMdTitle(show_default = true) {
-  return (editmdtitle && typeof editmdtitle.value != 'undefined' && null !== editmdtitle.value && editmdtitle.value ? editGetMdSuffix(editmdtitle.value) : (show_default ? 'post.md' : false));
+  return (editmdtitle && typeof editmdtitle.value != 'undefined' && null !== editmdtitle.value && editmdtitle.value ? editGetMdSuffix(editmdtitle.value) : (show_default ? 'post.md' : ''));
+}
+
+function editUploadZip() {
+  return (window.XMLHttpRequest && typeof texteditor.dataset.zipUploaderUrl != 'undefined' && null !== texteditor.dataset.zipUploaderUrl && texteditor.dataset.zipUploaderUrl ? texteditor.dataset.zipUploaderUrl : false);
 }
 
 function editdownload(blob, name) {
@@ -645,16 +658,17 @@ function editexport() {
         var d = new Date();
         editdownload(blob, "textEditor_export_"+d.getFullYear()+'-'+('0'+d.getMonth()).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+".zip");
 
-        if (false) {
-          //todo
+        if (editUploadZip()) {
           var f = new FormData();
-          f.append('file', blob);
+          f.append((typeof texteditor.dataset.zipUploaderParameter != 'undefined' && null !== texteditor.dataset.zipUploaderParameter && texteditor.dataset.zipUploaderParameter ? texteditor.dataset.zipUploaderParameter : 'file'), blob);
           var xhr = new XMLHttpRequest();
-          xhr.open("POST", 'https://file.io');
+          xhr.open("POST", editUploadZip());
+          if (typeof texteditor.dataset.zipUploaderCredential != 'undefined' && null !== texteditor.dataset.zipUploaderCredential && texteditor.dataset.zipUploaderCredential == 'true')
+            xhr.withCredentials = true;
           xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.responseText) {
-              data = JSON.parse(xhr.responseText);
-              //console.log(data['link']);
+            if (xhr.readyState == 4) {
+              if (typeof editZipUploaderCallbackFunc != 'undefined' && null !== editZipUploaderCallbackFunc && isFunction(editZipUploaderCallbackFunc))
+                editZipUploaderCallbackFunc(xhr.responseText);
             }
           }
           xhr.send(f);
@@ -982,13 +996,35 @@ if (editmdtitle && window.localStorage) {
 
   if (!editGetMdTitle(0))
     editmdtitle.value = editGetMdSuffix(window.localStorage.getItem(editstoragemdtitlename));
-  else
-    window.localStorage.setItem(editstoragemdtitlename, editGetMdSuffix(editmdtitle.value));
+
+  window.localStorage.setItem(editstoragemdtitlename, editGetMdSuffix(editmdtitle.value));
 
   editmdtitle.addEventListener('change', function(e){
     editmdtitle.value = editGetMdSuffix(editmdtitle.value);
-    window.localStorage.setItem(editstoragemdtitlename, editGetMdTitle());
+    window.localStorage.setItem(editstoragemdtitlename, editGetMdTitle(0));
   });
+
+}
+
+if (typeof texteditor.dataset.zipUrl != 'undefined' && null !== texteditor.dataset.zipUrl && texteditor.dataset.zipUrl) {
+  // Download zip file
+
+  var url = texteditor.dataset.zipUrl;
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url);
+  if (typeof texteditor.dataset.zipUrlCredential != 'undefined' && null !== texteditor.dataset.zipUrlCredential && texteditor.dataset.zipUrlCredential == 'true')
+    xhr.withCredentials = true;
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.responseText) {
+      var str = xhr.responseText;
+      var bytes = new Uint8Array(str.length);
+      for (var i=0; i<str.length; i++)
+        bytes[i] = str.charCodeAt(i);
+      var f = new File([bytes], 'post.zip', {type: 'application/x-zip-compressed'});
+      uploadFileSelectHandler([f], false, true);
+    }
+  }
+  xhr.send();
 
 }
 

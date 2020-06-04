@@ -23,7 +23,7 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
   mdconverterscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js';
   document.body.appendChild(mdconverterscript);
   mdconverterscript.onload = function() {
-    editconverter = new showdown.Converter();
+    editconverter = new showdown.Converter({noHeaderId: true});
   };
 
   /*
