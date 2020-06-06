@@ -479,7 +479,7 @@ if (editAllowRecaptcha) {
 // Image local upload
 
 function editAllowUploadLocal() {
-  return (window.File && window.FileList && window.FileReader && window.XMLHttpRequest ? true : false);
+  return (window.File && window.FileList && window.FileReader ? true : false);
 }
 
 var editimageuploaderlocal = document.getElementById('edit-imageuploaderlocal');
@@ -619,7 +619,7 @@ function editGetMdTitle(show_default = true) {
 }
 
 function editUploadZip() {
-  return (window.XMLHttpRequest && typeof texteditor.dataset.zipUploaderUrl != 'undefined' && null !== texteditor.dataset.zipUploaderUrl && texteditor.dataset.zipUploaderUrl ? texteditor.dataset.zipUploaderUrl : false);
+  return (window.fetch && typeof texteditor.dataset.zipUploaderUrl != 'undefined' && null !== texteditor.dataset.zipUploaderUrl && texteditor.dataset.zipUploaderUrl ? texteditor.dataset.zipUploaderUrl : false);
 }
 
 function editdownload(blob, name) {
@@ -669,26 +669,34 @@ function editexport(download = true) {
       zip.generateAsync({type:"blob"})
       .then(function(blob) {
 
-        if (download) {
-          var d = new Date();
-          editdownload(blob, "textEditor_export_"+d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+".zip");
-        }
+        var d = new Date();
+        var fn = "textEditor_export_"+d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+".zip";
 
-        if (editUploadZip()) {
+        if ((url = editUploadZip())) {
           var f = new FormData();
           f.append((typeof texteditor.dataset.zipUploaderParameter != 'undefined' && null !== texteditor.dataset.zipUploaderParameter && texteditor.dataset.zipUploaderParameter ? texteditor.dataset.zipUploaderParameter : 'file'), blob);
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", editUploadZip());
-          if (typeof texteditor.dataset.zipUploaderCredential != 'undefined' && null !== texteditor.dataset.zipUploaderCredential && texteditor.dataset.zipUploaderCredential == 'true')
-            xhr.withCredentials = true;
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-              if (typeof editZipUploaderCallbackFunc != 'undefined' && null !== editZipUploaderCallbackFunc && isFunction(editZipUploaderCallbackFunc))
-                editZipUploaderCallbackFunc(xhr.responseText);
-            }
+          const option = {
+            method: "POST",
+            body: f
           }
-          xhr.send(f);
-        }
+          if (typeof texteditor.dataset.zipUploaderCredential != 'undefined' && null !== texteditor.dataset.zipUploaderCredential && texteditor.dataset.zipUploaderCredential == 'true')
+            option['credentials'] = 'include';
+          fetch(url, option)
+          .then(res => res.json())
+          .then(result => {
+
+            if (typeof editZipUploaderCallbackFunc != 'undefined' && null !== editZipUploaderCallbackFunc && isFunction(editZipUploaderCallbackFunc))
+              editZipUploaderCallbackFunc(JSON.stringify(result));
+
+            if (download)
+              editdownload(blob, fn);
+
+          })
+          .catch((error) => {
+            console.log('Error: ', error);
+          });
+        } else if (download)
+          editdownload(blob, fn);
 
       });
 
@@ -1022,17 +1030,16 @@ if (editmdtitle && window.localStorage) {
 
 }
 
-if (typeof texteditor.dataset.zipUrl != 'undefined' && null !== texteditor.dataset.zipUrl && texteditor.dataset.zipUrl) {
+if (window.fetch && typeof texteditor.dataset.zipUrl != 'undefined' && null !== texteditor.dataset.zipUrl && texteditor.dataset.zipUrl) {
   // Download zip file
 
   var url = texteditor.dataset.zipUrl;
   fetch(url)
-    .then(res => res.blob())
-    .then(blob => {
-      var f = new File([blob], 'post.zip', {type: 'application/x-zip-compressed'});
-      uploadFileSelectHandler([f], false, true);
-    }
-  );
+  .then(res => res.blob())
+  .then(blob => {
+    var f = new File([blob], 'post.zip', {type: 'application/x-zip-compressed'});
+    uploadFileSelectHandler([f], false, true);
+  });
 
 }
 
