@@ -179,6 +179,12 @@ function mdFocus(a,d = false) {
 }
 
 function mdTextTrim(str) {
+  //var output = '';
+  //for (var i = 0; i < str.length; i++) {
+  //  if (str.charCodeAt(i) <= 127)
+  //    output += str.charAt(i);
+  //}
+  //return output;
   return str;
   //return str.trim().replace(/[\r\n]{2,}/gmi, "\n\n") + "\n\n";
 }
@@ -618,22 +624,27 @@ function editUploadZip() {
 
 function editdownload(blob, name) {
 
-  link = document.getElementById('editdownload');
-
-  var objectURL = URL.createObjectURL(blob);
-
   var type = blob.type;
   var size = blob.size;
 
-  link.href = objectURL;
-  link.download = name;
-  link.click();
+  var reader = new FileReader();
+  reader.onload = (function(name, type, size) {
+    return function(e) {
 
-  URL.revokeObjectURL(objectURL);
+      const link = document.getElementById('editdownload');
+
+      link.href = 'data:attachment/file;base64,'+e.target.result.substring(e.target.result.indexOf(',')+1);
+      link.download = name;
+      link.click();
+
+    };
+
+  })(name, type, size);
+  reader.readAsDataURL(blob);
 
 }
 
-function editexport() {
+function editexport(download = true) {
 
   var zip = new JSZip();
   zip.file(editGetMdTitle(), edittextarea.value);
@@ -657,8 +668,11 @@ function editexport() {
 
       zip.generateAsync({type:"blob"})
       .then(function(blob) {
-        var d = new Date();
-        editdownload(blob, "textEditor_export_"+d.getFullYear()+'-'+('0'+d.getMonth()).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+".zip");
+
+        if (download) {
+          var d = new Date();
+          editdownload(blob, "textEditor_export_"+d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+".zip");
+        }
 
         if (editUploadZip()) {
           var f = new FormData();
@@ -1019,10 +1033,12 @@ if (typeof texteditor.dataset.zipUrl != 'undefined' && null !== texteditor.datas
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.responseText) {
       var str = xhr.responseText;
+      console.log(str);
       var bytes = new Uint8Array(str.length);
       for (var i=0; i<str.length; i++)
         bytes[i] = str.charCodeAt(i);
       var f = new File([bytes], 'post.zip', {type: 'application/x-zip-compressed'});
+      console.log(f);
       uploadFileSelectHandler([f], false, true);
     }
   }
