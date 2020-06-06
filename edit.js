@@ -1026,23 +1026,13 @@ if (typeof texteditor.dataset.zipUrl != 'undefined' && null !== texteditor.datas
   // Download zip file
 
   var url = texteditor.dataset.zipUrl;
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", url);
-  if (typeof texteditor.dataset.zipUrlCredential != 'undefined' && null !== texteditor.dataset.zipUrlCredential && texteditor.dataset.zipUrlCredential == 'true')
-    xhr.withCredentials = true;
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.responseText) {
-      var str = xhr.responseText;
-      console.log(str);
-      var bytes = new Uint8Array(str.length);
-      for (var i=0; i<str.length; i++)
-        bytes[i] = str.charCodeAt(i);
-      var f = new File([bytes], 'post.zip', {type: 'application/x-zip-compressed'});
-      console.log(f);
+  fetch(url)
+    .then(res => res.blob())
+    .then(blob => {
+      var f = new File([blob], 'post.zip', {type: 'application/x-zip-compressed'});
       uploadFileSelectHandler([f], false, true);
     }
-  }
-  xhr.send();
+  );
 
 }
 
