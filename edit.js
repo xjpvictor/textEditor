@@ -17,6 +17,7 @@ var editimageuploader = document.getElementById('edit-imageuploader');
 const editstoragecaretpositionname = 'edit-caret-position';
 const editstoragemdtitlename = 'edit-md-title';
 var editmdtitle = (typeof document.getElementById('textEditorTitle') != 'undefined' && null !== document.getElementById('textEditorTitle') && document.getElementById('textEditorTitle') ? document.getElementById('textEditorTitle') : false);
+const editstorageziplastmodname = 'edit-zip-lastmod';
 
 const editimagetype = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
 const editpreviewpositioneridprefix = 'edit-positioner-';
@@ -582,8 +583,11 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
           edittextarea.value = mdTextTrim(mdf.result);
         };
         mdf.readAsText(blob);
-        if (editmdtitle)
+        if (editmdtitle) {
           editmdtitle.value = editGetMdSuffix(name);
+          if (window.localStorage)
+            window.localStorage.setItem(editstoragemdtitlename, editmdtitle.value);
+        }
       } else
         mdAddImg((fn === true ? false : (fn ? '' : encodeURIComponent(name))), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? true : false));
 
@@ -684,6 +688,11 @@ function editexport(download = true) {
           fetch(url, option)
           .then(res => res.json())
           .then(result => {
+
+            if (window.localStorage) {
+              var t = new Date();
+              window.localStorage.setItem(editstorageziplastmodname, Math.floor(t.getTime() / 1000));
+            }
 
             if (typeof editZipUploaderCallbackFunc != 'undefined' && null !== editZipUploaderCallbackFunc && isFunction(editZipUploaderCallbackFunc))
               editZipUploaderCallbackFunc(JSON.stringify(result));
@@ -1033,13 +1042,17 @@ if (editmdtitle && window.localStorage) {
 if (window.fetch && typeof texteditor.dataset.zipUrl != 'undefined' && null !== texteditor.dataset.zipUrl && texteditor.dataset.zipUrl) {
   // Download zip file
 
-  var url = texteditor.dataset.zipUrl;
-  fetch(url)
-  .then(res => res.blob())
-  .then(blob => {
-    var f = new File([blob], 'post.zip', {type: 'application/x-zip-compressed'});
-    uploadFileSelectHandler([f], false, true);
-  });
+  if (typeof texteditor.dataset.zipUrlLastmod == 'undefined' || null === texteditor.dataset.zipUrlLastmod || !texteditor.dataset.zipUrlLastmod || !window.localStorage || texteditor.dataset.zipUrlLastmod > (window.localStorage.getItem(editstorageziplastmodname) * 1 + 1)) {
+
+    var url = texteditor.dataset.zipUrl;
+    fetch(url)
+    .then(res => res.blob())
+    .then(blob => {
+      var f = new File([blob], 'post.zip', {type: 'application/x-zip-compressed'});
+      uploadFileSelectHandler([f], false, true);
+    });
+
+  }
 
 }
 

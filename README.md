@@ -113,6 +113,7 @@ data-zip-uploader-parameter="" // Optional, the parameter for the zip file, defa
 data-zip-uploader-credential="" // Optional, include credential header (cookie) with the POST request, default to be "false"
 data-zip-url="" // Optional, the URL to download the zip file, if set, the zip file will be downloaded via "GET" request and be imported on page load
 data-zip-url-credential="" // Optional, include credential header (cookie) with the GET request, default to be "false"
+data-zip-url-lastmod="" // Optional, lastmod timestamp of uploaded zip file, if set, zip file will be downloaded only if local version has a timestamp older than uploaded version
 ```
 
 Optionally, you may also define a callback function as `editZipUploaderCallbackFunc` to be called once the uploading is finished
