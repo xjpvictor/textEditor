@@ -548,7 +548,7 @@ function uploadFileSelectHandler(e, input = false, fn = '') {
                     var f = new File([content], filename, {type: 'image/'+t});
                   } else
                     var f = new File([content], filename);
-                  uploadFileSelectHandlerFileReader(reader, [f], 0, 1, true, input, (i == n ? true : false));
+                  uploadFileSelectHandlerFileReader([f], 0, 1, true, input, (i == n ? true : false));
                 });
               }(filename, i, n);
             });
@@ -558,12 +558,12 @@ function uploadFileSelectHandler(e, input = false, fn = '') {
       }
 
     } else
-      uploadFileSelectHandlerFileReader(reader, files, 0, n, fn, input);
+      uploadFileSelectHandlerFileReader(files, 0, n, fn, input);
 
   }
 }
 
-function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, preview = 0) {
+function uploadFileSelectHandlerFileReader(files, i, n, fn, input, preview = 0) {
   // fn === true: import
 
   var f = files[i];
@@ -571,6 +571,8 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
   var type = f.type;
   var size = f.size;
   var lastMod = f.lastModified;
+
+  var reader = new FileReader();
 
   reader.onload = (function(name, type, size, lastMod, i, n, fn) {
     return function(e) {
@@ -592,12 +594,12 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
         mdAddImg((fn === true ? false : (fn ? '' : encodeURIComponent(name))), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? true : false));
 
       if (i < n-1)
-        uploadFileSelectHandlerFileReader(reader, files, i+1, n, fn, input, preview);
+        uploadFileSelectHandlerFileReader(files, i+1, n, fn, input, preview);
       else if (preview === 0) {
         if (fn !== true)
-          preview = false;
-        else
           preview = true;
+        else
+          preview = false;
       }
 
       if (preview && input)
@@ -606,9 +608,9 @@ function uploadFileSelectHandlerFileReader(reader, files, i, n, fn, input, previ
     };
   })(name, type, size, lastMod, i, n, fn);
 
-  if (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1)
+  if (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1) {
     reader.readAsDataURL(f);
-  else
+  }else
     reader.readAsArrayBuffer(f);
 
 }
@@ -1042,7 +1044,7 @@ if (editmdtitle && window.localStorage) {
 if (window.fetch && typeof texteditor.dataset.zipUrl != 'undefined' && null !== texteditor.dataset.zipUrl && texteditor.dataset.zipUrl) {
   // Download zip file
 
-  if (typeof texteditor.dataset.zipUrlLastmod == 'undefined' || null === texteditor.dataset.zipUrlLastmod || !texteditor.dataset.zipUrlLastmod || !window.localStorage || texteditor.dataset.zipUrlLastmod > (window.localStorage.getItem(editstorageziplastmodname) * 1 + 1)) {
+  if (typeof texteditor.dataset.zipUrlLastmod == 'undefined' || null === texteditor.dataset.zipUrlLastmod || !texteditor.dataset.zipUrlLastmod || !window.localStorage || !window.localStorage.getItem(editstorageziplastmodname) || texteditor.dataset.zipUrlLastmod > (window.localStorage.getItem(editstorageziplastmodname) * 1 + 1)) {
 
     var url = texteditor.dataset.zipUrl;
     fetch(url)
