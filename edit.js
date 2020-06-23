@@ -371,7 +371,7 @@ function editshowPreview() {
             imgs.forEach(function(img) {
               var fn_encoded = encodeURIComponent(img.name);
               if (html.indexOf('<img src="'+fn_encoded+'"') !== -1) {
-                html = html.replace(new RegExp('<img src="'+fn_encoded+'"', 'g'), '<img src="'+img.Value.data+'" data-image-name="'+img.name+'"');
+                html = html.replace(new RegExp('<img src="'+fn_encoded+'"', 'g'), '<img src="'+img.Value.data.replace('data:image/svg;', 'data:image/svg+xml;')+'" data-image-name="'+img.name+'"');
               } else if (html.indexOf('data-image-name="'+img.name+'"') === -1) {
                 editdbtxn(editdbimgstorename).delete(img.name);
               }
