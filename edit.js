@@ -231,7 +231,7 @@ function mdAddURL(url = '', image = false, title = '', text = '', select = false
   // Url, image
   var a = edittextarea.selectionStart;
   var d = edittextarea.selectionEnd;
-  edittextarea.value = mdTextTrim(edittextarea.value.substring(0,a) + (str = (sBefore = (image ? (edittextarea.value.substring(0,a).match(/[\n\r]{2,}$/) ? '' : "\n")+'<figure markdown="1">'+"\n"+'!' : (!a || edittextarea.value.substring(a-1,1).match(/[\n\r\t\s]/) ? '' : ' ')) + '[' + (d > a ? edittextarea.value.substring(a,d) : text) + '](') + (s = (url ? url : '')) + ' "' + (d > a ? edittextarea.value.substring(a,d) : title) + '")' + (image ? "\n"+'<figcaption>'+"\n"+caption+'</figcaption>'+"\n"+'</figure>' + "\n\n" : (edittextarea.value.substring(d,1).match(/[\n\r\t\s]/) ? '' : ' '))) + edittextarea.value.substring(d));
+  edittextarea.value = mdTextTrim(edittextarea.value.substring(0,a) + (str = (sBefore = (image ? (edittextarea.value.substring(0,a).match(/[\n\r]{2,}$/) ? '' : "\n")+'<figure markdown="1">'+"\n"+'<span style="display:block;margin-left:auto;margin-right:auto;max-width:auto;">'+"\n"+'!' : (!a || edittextarea.value.substring(a-1,1).match(/[\n\r\t\s]/) ? '' : ' ')) + '[' + (d > a ? edittextarea.value.substring(a,d) : text) + '](') + (s = (url ? url : '')) + ' "' + (d > a ? edittextarea.value.substring(a,d) : title) + '")' + (image ? "\n"+'</span>'+"\n"+'<figcaption markdown="1">'+"\n"+caption+'</figcaption>'+"\n"+'</figure>' + "\n\n" : (edittextarea.value.substring(d,1).match(/[\n\r\t\s]/) ? '' : ' '))) + edittextarea.value.substring(d));
   if (select)
     mdFocus((a = a + sBefore.length), a + s);
   else
@@ -1046,7 +1046,7 @@ if (window.fetch && typeof texteditor.dataset.zipUrl != 'undefined' && null !== 
 
   if (typeof texteditor.dataset.zipUrlLastmod == 'undefined' || null === texteditor.dataset.zipUrlLastmod || !texteditor.dataset.zipUrlLastmod || !window.localStorage || !window.localStorage.getItem(editstorageziplastmodname) || texteditor.dataset.zipUrlLastmod > (window.localStorage.getItem(editstorageziplastmodname) * 1 + 1)) {
 
-    var url = texteditor.dataset.zipUrl;
+    var url = (typeof texteditor.dataset.zipurlProxyUrl != 'undefined' && null !== texteditor.dataset.zipurlProxyUrl && typeof texteditor.dataset.zipurlProxyParameter != 'undefined' && null !== texteditor.dataset.zipurlProxyParameter ? texteditor.dataset.zipurlProxyUrl + '?' + texteditor.dataset.zipurlProxyParameter + '=' + encodeURIComponent(texteditor.dataset.zipUrl) : texteditor.dataset.zipUrl);
     fetch(url)
     .then(res => res.blob())
     .then(blob => {

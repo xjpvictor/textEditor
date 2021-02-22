@@ -114,6 +114,15 @@ data-zip-uploader-credential="" // Optional, include credential header (cookie) 
 data-zip-url="" // Optional, the URL to download the zip file, if set, the zip file will be downloaded via "GET" request and be imported on page load
 data-zip-url-credential="" // Optional, include credential header (cookie) with the GET request, default to be "false"
 data-zip-url-lastmod="" // Optional, lastmod timestamp of uploaded zip file, if set, zip file will be downloaded only if local version has a timestamp older than uploaded version
+data-zipurl-proxy-url="" // Optional, if set, textEditor will download zip from this URL instead, could serve as a proxy so that the server could download the zip from "data-zip-url"
+data-zipurl-proxy-parameter="" // Optional, need to be set if zipurl-proxy-url is set
+```
+
+For the script to work as a proxy for zipurl, simply include
+```
+include('zipurl-proxy.php');
+$texteditor_zipurl_proxy = new texteditor_zipurl_proxy();
+echo $texteditor_zipurl_proxy->download($_GET['ZIPURL_PROXY_PARAMETER']);
 ```
 
 Optionally, you may also define a callback function as `editZipUploaderCallbackFunc` to be called once the uploading is finished
