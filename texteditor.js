@@ -68,59 +68,89 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
   }
 
   /*
-   * Load Katex
+   * Load Katex (removed)
    */
 
-  // katex.css
-  var textpreviewkatexcss = document.createElement('link');
-  textpreviewkatexcss.rel = 'stylesheet';
-  textpreviewkatexcss.href = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css';
-  textpreviewkatexcss.integrity = 'sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq';
-  textpreviewkatexcss.crossOrigin = 'anonymous';
-  document.head.appendChild(textpreviewkatexcss);
+  //// katex.css
+  //var textpreviewkatexcss = document.createElement('link');
+  //textpreviewkatexcss.rel = 'stylesheet';
+  //textpreviewkatexcss.href = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css';
+  //textpreviewkatexcss.integrity = 'sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq';
+  //textpreviewkatexcss.crossOrigin = 'anonymous';
+  //document.head.appendChild(textpreviewkatexcss);
 
-  // katex.js
-  var katexscript = document.createElement('script');
-  katexscript.type = 'text/javascript';
-  katexscript.src = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js';
-  katexscript.integrity = 'sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz';
-  katexscript.crossOrigin = 'anonymous';
-  document.body.appendChild(katexscript);
-  katexscript.onload = function() {
-    // mhchem.js
-    var mhchemscript = document.createElement('script');
-    mhchemscript.type = 'text/javascript';
-    mhchemscript.src = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js';
-    mhchemscript.integrity = 'sha384-oa0lfxCGjaU1LdYckhq8LZcP+JTf8cyJXe69O6VE6UrShzWveT6KiCElJrck/stm';
-    mhchemscript.crossOrigin = 'anonymous';
-    document.body.appendChild(mhchemscript);
-    mhchemscript.onload = function() {
-      // auto-render.js
-      var katexautorenderscript = document.createElement('script');
-      katexautorenderscript.type = 'text/javascript';
-      katexautorenderscript.src = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js';
-      katexautorenderscript.integrity = 'sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI';
-      katexautorenderscript.crossOrigin = 'anonymous';
-      document.body.appendChild(katexautorenderscript);
-    };
-  };
+  //// katex.js
+  //var katexscript = document.createElement('script');
+  //katexscript.type = 'text/javascript';
+  //katexscript.src = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js';
+  //katexscript.integrity = 'sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz';
+  //katexscript.crossOrigin = 'anonymous';
+  //document.body.appendChild(katexscript);
+  //katexscript.onload = function() {
+  //  // mhchem.js
+  //  var mhchemscript = document.createElement('script');
+  //  mhchemscript.type = 'text/javascript';
+  //  mhchemscript.src = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js';
+  //  mhchemscript.integrity = 'sha384-oa0lfxCGjaU1LdYckhq8LZcP+JTf8cyJXe69O6VE6UrShzWveT6KiCElJrck/stm';
+  //  mhchemscript.crossOrigin = 'anonymous';
+  //  document.body.appendChild(mhchemscript);
+  //  mhchemscript.onload = function() {
+  //    // auto-render.js
+  //    var katexautorenderscript = document.createElement('script');
+  //    katexautorenderscript.type = 'text/javascript';
+  //    katexautorenderscript.src = 'https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js';
+  //    katexautorenderscript.integrity = 'sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI';
+  //    katexautorenderscript.crossOrigin = 'anonymous';
+  //    document.body.appendChild(katexautorenderscript);
+  //  };
+  //};
 
-  // webfontloader.js
-  window.WebFontConfig = {
-    custom: {
-      families: ['KaTeX_AMS', 'KaTeX_Caligraphic:n4,n7', 'KaTeX_Fraktur:n4,n7',
-        'KaTeX_Main:n4,n7,i4,i7', 'KaTeX_Math:i4,i7', 'KaTeX_Script',
-        'KaTeX_SansSerif:n4,n7,i4', 'KaTeX_Size1', 'KaTeX_Size2', 'KaTeX_Size3',
-        'KaTeX_Size4', 'KaTeX_Typewriter'],
+  //// webfontloader.js
+  //window.WebFontConfig = {
+  //  custom: {
+  //    families: ['KaTeX_AMS', 'KaTeX_Caligraphic:n4,n7', 'KaTeX_Fraktur:n4,n7',
+  //      'KaTeX_Main:n4,n7,i4,i7', 'KaTeX_Math:i4,i7', 'KaTeX_Script',
+  //      'KaTeX_SansSerif:n4,n7,i4', 'KaTeX_Size1', 'KaTeX_Size2', 'KaTeX_Size3',
+  //      'KaTeX_Size4', 'KaTeX_Typewriter'],
+  //  },
+  //};
+
+  //var katexfontscript = document.createElement('script');
+  //katexfontscript.type = 'text/javascript';
+  //katexfontscript.src = 'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js';
+  //katexfontscript.integrity = 'sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=';
+  //katexfontscript.crossOrigin = 'anonymous';
+  //document.body.appendChild(katexfontscript);
+
+  /*
+   * Load MathJax
+   */
+
+  var polyfillscript = document.createElement('script');
+  polyfillscript.type = 'text/javascript';
+  polyfillscript.src = 'https://polyfill.io/v3/polyfill.min.js?features=es6';
+  polyfillscript.crossOrigin = 'anonymous';
+  document.body.appendChild(polyfillscript);
+  MathJax = {
+    //loader: {
+    //  load: ['']
+    //},
+    tex: {
+      //packages: {
+      //},
+      inlineMath: [['\\(', '\\)']]
     },
+    svg: {
+      fontCache: 'global'
+    }
   };
-
-  var katexfontscript = document.createElement('script');
-  katexfontscript.type = 'text/javascript';
-  katexfontscript.src = 'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js';
-  katexfontscript.integrity = 'sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=';
-  katexfontscript.crossOrigin = 'anonymous';
-  document.body.appendChild(katexfontscript);
+  var mathjaxscript = document.createElement('script');
+  mathjaxscript.type = 'text/javascript';
+  mathjaxscript.id = 'MathJax-script';
+  mathjaxscript.async = true;
+  mathjaxscript.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js';
+  mathjaxscript.crossOrigin = 'anonymous';
+  document.body.appendChild(mathjaxscript);
 
   /*
    * Load texteditor.html

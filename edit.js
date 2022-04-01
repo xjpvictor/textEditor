@@ -287,19 +287,24 @@ function editshowPreviewImageNotFound(html) {
 
   if (editpreview.innerHTML !== '<div>'+str+'</div>') {
 
-    regstr = '<p class="'+editpreviewpositionerclass+'" id="'+editpreviewpositioneridprefix+'[0-9]+" data-edit-position="([0-9]+)"></p>([\r\n]*';
-    var reg = new RegExp(regstr + '<[^/\s>]+)', 'gmi');
-    var reg_filter = new RegExp(regstr + '</[a-z]+>)', 'gmi');
+    regstr = '(<p class="'+editpreviewpositionerclass+'" id="'+editpreviewpositioneridprefix+'[0-9]+" data-edit-position="([0-9]+)"></p>)([\r\n]*';
+    var reg = new RegExp(regstr + '<[a-z0-9]+)([^>]*>)', 'gmi');
+    var reg_filter = new RegExp(regstr + '</[a-z0-9]+>)', 'gmi');
 
-    previewhtml = str.replace(reg, function(match, p1, p2) {
-      return match+' class="'+editpreviewpositionbuttonclass+'" data-edit-position="'+p1+'" onclick="if(editLargeScreen()){mdFocus('+p1+','+p1+');setTimeout(function(){edittextarea.focus();},10);}"';
-    }).replace(reg_filter, function(match, p1, p2) {
-      if (p1 == '-1')
+    previewhtml = str.replace(reg, function(match, p1, p2, p3, p4) {
+      cls = p4.trim().match(/(^| )+class="([^\"]*)"/);
+      if (null !== cls && null !== cls[2])
+        cls = cls[2];
+      else
+        cls = '';
+      return p1+p3+' class="'+editpreviewpositionbuttonclass+' '+cls+'" data-edit-position="'+p2+'" onclick="if(editLargeScreen()){mdFocus('+p2+','+p2+');setTimeout(function(){edittextarea.focus();},10);}" ' + p4.trim().replace(/(^| )*class="[^\"]*"/, '');
+    }).replace(reg_filter, function(match, p1, p2, p3) {
+      if (p2 == '-1')
         return match;
-      var i = editpreviewpositions.indexOf(parseInt(p1));
+      var i = editpreviewpositions.indexOf(parseInt(p2));
       if (i > -1)
         editpreviewpositions.splice(i, 1);
-      return p2;
+      return p3;
     });
     if (typeof editpreview.children != 'undefined' && null !== editpreview.children && editpreview.children.length)
       editpreview.removeChild(editpreview.children[0]);
@@ -307,7 +312,12 @@ function editshowPreviewImageNotFound(html) {
     var elem = document.createElement('div');
     elem.innerHTML = previewhtml;
     editpreview.appendChild(elem);
-    setTimeout(function(){editautoUpdate();editSyntaxHighlight();renderMathInElement(editpreview);},10);
+    setTimeout(function(){
+      editautoUpdate();
+      editSyntaxHighlight();
+      MathJax.typeset();
+      //renderMathInElement(editpreview);
+    },10);
 
     wstr = editpreview.innerHTML.trim().replace(/<[^>]+>/gmi, '').trim();
     document.getElementById('edit-status-word-count').innerHTML = 'Word: ' + (!wstr.length ? 0 : wstr.split(/[\r\n\t\s]+/gmi).length) + ' Characters: ' + wstr.replace(/[\r\n]+[\s\t]+/gmi, '').replace(/[\s\t]+[\r\n]+/gmi, '').replace(/[\t]+/gmi, ' ').replace(/[\r\n]+/gmi, '').length;
@@ -442,7 +452,7 @@ function editSearchUnsplash(recaptcha = false, p = 1) {
       }
     }
     xhr.send();
-    if (typeof document.getElementById(editimageuploaderunsplashrecaptchaelementid) != 'undefined' && null !== document.getElementById(editimageuploaderunsplashrecaptchaelementid) && document.getElementById(editimageuploaderunsplashrecaptchaelementid)) {
+    if (typeof document.getElementById(editimageuploaderunsplashrecaptchaelementid) != 'undefined' && null !== document.getElementById(editimageuploaderunsplashrecaptchaelementid)) {
       document.getElementById(editimageuploaderunsplashrecaptchaelementid).parentNode.removeChild(document.getElementById(editimageuploaderunsplashrecaptchaelementid));
       editGenerateRecaptchaElement();
       editimageuploaderunsplashrecaptchawidgetid = false;
@@ -459,7 +469,7 @@ if (editAllowUnsplash()) {
 }
 
 // Recaptcha
-var editimageuploaderunsplashrecaptcha = document.getElementById('edit-imageuploaderunsplash-recaptcha');
+var editimageuploaderunsplashrecaptchaelement = document.getElementById('edit-imageuploaderunsplash-recaptcha');
 var editimageuploaderunsplashrecaptchaelementid = '';
 var editimageuploaderunsplashrecaptchawidgetid = false;
 
@@ -470,7 +480,7 @@ function editGenerateRecaptchaElement() {
   recaptchadiv.dataset.sitekey = texteditor.dataset.recaptchaKey;
   recaptchadiv.dataset.callback = 'editSearchUnsplash';
   recaptchadiv.dataset.size = 'invisible';
-  editimageuploaderunsplashrecaptcha.appendChild(recaptchadiv);
+  editimageuploaderunsplashrecaptchaelement.appendChild(recaptchadiv);
 }
 if (editAllowRecaptcha) {
   editform.classList.add('edit-allow-recaptcha');
@@ -953,7 +963,7 @@ function editLargeScreen() {
   if (typeof texteditor.dataset.mobileDeviceWidth != 'undefined' && null !== texteditor.dataset.mobileDeviceWidth && texteditor.dataset.mobileDeviceWidth) {
     var vw = window.innerWidth;
     var vh = window.innerHeight;
-    if (vw <= texteditor.dataset.mobileDeviceWidth || vh >= texteditor.dataset.mobileDeviceWidth)
+    if (vw <= texteditor.dataset.mobileDeviceWidth) // || vh >= texteditor.dataset.mobileDeviceWidth)
       // Mobile
       return false;
   }
