@@ -103,6 +103,11 @@ edittextarea.onkeydown = function(e) {
     e.preventDefault();
     e.stopPropagation();
     mdAddStyle('_');
+  } else if (k == 'u' && e.ctrlKey == true) {
+    // ctrl-u
+    e.preventDefault();
+    e.stopPropagation();
+    mdAddStyle('<u>', '</u>');
   } else if (k == '1' && e.ctrlKey == true) {
     // ctrl-1
     e.preventDefault();

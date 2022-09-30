@@ -1,0 +1,11 @@
+<?php
+
+$url = '';
+
+$html = __DIR__.'/index.html.php';
+
+$unsplash_access_key = '';
+$unsplash_secret_key = '';
+
+$recaptcha_pubkey = '';
+$recaptcha_seckey = '';

@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Sarala&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Sarala:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+.textEditor .fontSerif,.textEditor .fontSerif span,.textEditor .fontSerif a{font-family:Merriweather,Baskerville,"Baskerville Old Face",Palatino,"Palatino Linotype","Noto Serif","Times New Roman",serif;}
+.textEditor .fontMono{font-family:"Cousine",Monaco,Menlo,"Source Code Pro","Noto Mono",Consolas,monospace;}
 
 .textEditor{position:relative;}
 .textEditor .edit-clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0;}
@@ -31,7 +34,8 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 /* textarea */
 .textEditor #edit-textarea,.textEditor #edittextareaplace{display:block;border:0;border-radius:0;margin:0;width:100%;padding:0 5px;}
 
-.textEditor #edit-textarea{appearance:none;-webkit-appearance:none;-moz-appearance:none;resize:none;min-height:60vh;max-height:60vh;vertical-align:baseline;padding-bottom:40vh;background-image:linear-gradient(transparent, transparent 25px, #e6ebf194 0px);background-size:100% 26px;background-attachment:local;overflow-y:auto;caret-color:#ff6500;scroll-behavior:smooth;margin-right:-.5px;}
+.textEditor #edit-textarea{appearance:none;-webkit-appearance:none;-moz-appearance:none;resize:none;min-height:60vh;vertical-align:baseline;padding-bottom:40vh;background-image:linear-gradient(transparent, transparent 25px, #e6ebf194 0px);background-size:100% 26px;background-attachment:local;overflow-y:auto;caret-color:#ff6500;scroll-behavior:smooth;margin-right:-.5px;}
+.textEditor #edit-textarea:focus{outline-color:#ff6500;}
 .textEditor #edit-textarea::-webkit-scrollbar{width:0;}
 
 .textEditor #edittextareaplace{position:absolute;z-index:2;top:0;left:0;opacity:0;pointer-events:none;box-sizing:border-box;}
@@ -61,10 +65,10 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor>.edit-button:first-child{padding-right:5px;}
 
 /* title */
-.textEditor #edit-title{color:#999;font-size:13px;padding:5px 200px 5px 10px;float:left;margin-right:-200px;height:32px;}
+.textEditor #edit-title{color:#999;font-size:13px;padding:5px 250px 5px 10px;float:left;margin-right:-250px;height:32px;}
 
 /* options */
-.textEditor #edit-options{float:right;width:200px;height:32px;padding:5px;}
+.textEditor #edit-options{float:right;width:250px;height:32px;padding:5px;}
 .textEditor #edit-options .edit-button{float:right;line-height:22px;font-size:16px;}
 .textEditor #edit-options #edit-custom-buttons .edit-button{font-size:13px;}
 
@@ -112,7 +116,7 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
  * Preview box
  */
 
-.textEditor #edit-preview-wrap{min-height:70vh;height:70vh;max-height:70vh;overflow-x:hidden;overflow-y:auto;scroll-behavior:smooth;}
+.textEditor #edit-preview-wrap{min-height:70vh;height:70vh;overflow-x:hidden;overflow-y:auto;scroll-behavior:smooth;}
 .textEditor #edit-preview{min-height:calc(70vh - 40px);outline:none;caret-color:transparent;margin:0 2px;padding-bottom:40px;}
 .textEditor #edit-preview,.textEditor #edit-preview *{cursor:default;}
 .textEditor #edit-preview.edittyping:after{content:attr(data-placeholder);position:absolute;bottom:0;left:0;z-index:2;width:100px;padding:2px 5px;background:linear-gradient(90deg,white 50%,transparent);color:#666;}
@@ -130,6 +134,7 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor #edit-preview .edit-position-buttons:after{content:'';display:none;width:10px;height:10px;position:absolute;background:rgba(255,101,0,.5);border-radius:50%;right:5px;top:5px;z-index:2;border:.5px solid rgba(255,101,0,.8);box-shadow:0 0 1px 1px rgba(255,101,0,.3);}
 .textEditor #edit-preview .edit-position-buttons:hover:after{display:block;cursor:pointer;}
 .textEditor #edit-preview .katex{font-size:1.1em;}
+.textEditor #edit-preview img{max-width:100%;}
 
 /*
  * Mobile device
@@ -157,6 +162,12 @@ body.texteditor-mobile-device .textEditor #edit-preview-wrap{height:fit-content;
 body.texteditor-mobile-device .textEditor #edit-preview img{border:none;box-shadow:none;}
 body.texteditor-mobile-device .textEditor #edit-preview.edittyping:after{display:none;}
 body.texteditor-mobile-device .textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners):before,body.texteditor-mobile-device .textEditor #edit-preview p.edit-preview-caret-current:not(.edit-positioners):empty,body.texteditor-mobile-device .textEditor #edit-preview .edit-position-buttons:after,body.texteditor-mobile-device .textEditor #edit-preview .edit-position-buttons:hover:after{display:none;}
+
+/* recaptcha */
+.grecaptcha-badge{visibility:hidden;z-index:3;}
+
+#textEditorPreview table{width:100%;background:#eee;}
+#textEditorPreview table *{font-size:15px;background:#eee !important;}
 
 @media screen and (max-width:800px) {
 .textEditor .edit-imageuploaderunsplashImageWrappers{width:32%;height:0;padding-top:32%;}
