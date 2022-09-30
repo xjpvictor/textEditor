@@ -98,5 +98,15 @@ if (isset($html) && $html && file_exists($html))
 
 file_put_contents($edit_zip_url_file, '');
 
+// Clean tmp folder
+
+$files = glob($text_editor_tmp_dir."/*");
+$timestamp = time();
+
+foreach ($files as $file) {
+  if (is_file($file) && $timestamp - filemtime($file) >= 60 * 60 * 24 * 30 && file_exists($file)) // 30 days
+    unlink($file);
+}
+
 exit;
 
