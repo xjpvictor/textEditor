@@ -559,7 +559,7 @@ function uploadFileSelectHandler(e, input = false, fn = '') {
               i++;
               return function(filename, i, n) {
                 zip.file(filename).async('blob').then(function(content) {
-                  if (editimagetype.indexOf((t = filename.substring(filename.lastIndexOf('.')+1))) > -1) {
+                  if (editimagetype.indexOf((t = filename.substring(filename.lastIndexOf('.')+1).toLowerCase())) > -1) {
                     var f = new File([content], filename, {type: 'image/'+t});
                   } else
                     var f = new File([content], filename);
@@ -592,7 +592,7 @@ function uploadFileSelectHandlerFileReader(files, i, n, fn, input, preview = 0) 
   reader.onload = (function(name, type, size, lastMod, i, n, fn) {
     return function(e) {
 
-      editdbtxn((editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? editdbimgstorename : editdbfilestorename)).add({'name': (fn === true ? name : (fn ? fn : name)), 'Value': {'data': e.target.result, 'timestamp': getTS()}});
+      editdbtxn((editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1).toLowerCase()) > -1 ? editdbimgstorename : editdbfilestorename)).add({'name': (fn === true ? name : (fn ? fn : name)), 'Value': {'data': e.target.result, 'timestamp': getTS()}});
       if (fn === true && (name.indexOf('.md') == name.length - 3 || name.indexOf('.markdown') == name.length - 9)) {
         var blob = new Blob([e.target.result]);
         var mdf = new FileReader();
@@ -606,7 +606,7 @@ function uploadFileSelectHandlerFileReader(files, i, n, fn, input, preview = 0) 
             window.localStorage.setItem(editstoragemdtitlename, editmdtitle.value);
         }
       } else
-        mdAddImg((fn === true ? false : (fn ? '' : encodeURIComponent(name))), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1 ? true : false));
+        mdAddImg((fn === true ? false : (fn ? '' : encodeURIComponent(name))), name, name, '', (fn === true ? false : (i == n-1 ? true : false)), (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1).toLowerCase()) > -1 ? true : false));
 
       if (i < n-1)
         uploadFileSelectHandlerFileReader(files, i+1, n, fn, input, preview);
@@ -623,7 +623,7 @@ function uploadFileSelectHandlerFileReader(files, i, n, fn, input, preview = 0) 
     };
   })(name, type, size, lastMod, i, n, fn);
 
-  if (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1)) > -1) {
+  if (editimagetype.indexOf(name.substring(name.lastIndexOf('.')+1).toLowerCase()) > -1) {
     reader.readAsDataURL(f);
   }else
     reader.readAsArrayBuffer(f);

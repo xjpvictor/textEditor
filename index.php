@@ -3,6 +3,9 @@ define("include", true);
 
 include(__DIR__.'/config.php');
 
+$timestamp = time();
+$hashAlgo = 'sha256';
+
 function get_randomstring($length = 32, $allow_symbol = false) {
   $characters = '0123456789abcdefghijklmnopqrstuvwxyz'.($allow_symbol ? '!@#$%^&*()-_=+|?~,.<>\'";:{}[]' : '');
   $randomString = '';
@@ -10,6 +13,30 @@ function get_randomstring($length = 32, $allow_symbol = false) {
     $randomString .= $characters[rand(0, strlen($characters) - 1)];
   }
   return $randomString;
+}
+
+function recaptcha_verify($response, $remoteip = '') {
+  global $recaptcha_seckey;
+
+  if (!$response)
+    return false;
+
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, 'secret='.$recaptcha_seckey.'&response='.$response.($remoteip ? '&remoteip='.urlencode($remoteip) : ''));
+  $e = json_decode(curl_exec($ch), 1);
+  curl_close($ch);
+
+  if (isset($e['success']) && $e['success'] == true)
+    return true;
+  else
+    return false;
+
 }
 
 $text_editor_tmp_dir = __DIR__.'/tmp';
@@ -101,10 +128,9 @@ file_put_contents($edit_zip_url_file, '');
 // Clean tmp folder
 
 $files = glob($text_editor_tmp_dir."/*");
-$timestamp = time();
 
 foreach ($files as $file) {
-  if (is_file($file) && $timestamp - filemtime($file) >= 60 * 60 * 24 * 30 && file_exists($file)) // 30 days
+  if (is_file($file) && $timestamp - filemtime($file) >= 60 * 60 * 24 * 30 * 6 && file_exists($file)) // 180 days
     unlink($file);
 }
 
