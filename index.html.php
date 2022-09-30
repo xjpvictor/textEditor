@@ -83,6 +83,7 @@ input[type="text"],input[type="password"],input[type="email"]{appearance:none;-w
 .uid-qr .uid-qrcode.animate{transition:height .3s ease 0s;-webkit-transition:height .3s ease 0s;-moz-transition:height .3s ease 0s;-o-transition:height .3s ease 0s;}
 
 @media screen and (max-width:800px) {
+#h1{padding-left:0;padding-right:0;}
 .textEditor #edit-form{margin-left:.5px;}
 #textEditorPreview,#edit-preview-wrap{height:auto !important;}
 #edit-preview{min-height:50vh !important;}
