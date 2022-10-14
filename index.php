@@ -6,6 +6,12 @@ include(__DIR__.'/config.php');
 $timestamp = time();
 $hashAlgo = 'sha256';
 
+$editor_link_parameter = array(
+  'url' => 'zu',
+  'filename' => 'fn',
+  'url_credential' => 'zuc',
+);
+
 function get_randomstring($length = 32, $allow_symbol = false) {
   $characters = '0123456789abcdefghijklmnopqrstuvwxyz'.($allow_symbol ? '!@#$%^&*()-_=+|?~,.<>\'";:{}[]' : '');
   $randomString = '';

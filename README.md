@@ -1,6 +1,6 @@
 # textEditor
 
-A What-You-WhoCares-Is-What-You-Get texteditor for html page
+A What-You-See-and-Type-Is-What-You-Get texteditor for html page
 
 ## FEATURE
 
@@ -9,7 +9,8 @@ A What-You-WhoCares-Is-What-You-Get texteditor for html page
 - Auto-scrolling preview panel to match caret position
 - Auto-scrolling textarea with caret in focus (Typewriter mode)
 - Focusing on current editing block (Focus mode)
-- Support LaTeX with Chemical equations
+- Support LaTeX (Mathjax) with Chemical equations (mhchem)
+- YAML front matter
 - Syntax highlighting
 - Spelling check
 - Image uploading and preview
@@ -140,6 +141,10 @@ const editZipUploaderCallbackFunc = function(text) {
 This is useful to upload the `.zip` file to ephemeral services such as [file.io](https://file.io) and send the resulting link to server for cross-device syncing service without eating up your server's disk space
 
 Note: [transfer.sh](https://transfer.sh) does not have an `access-control-allow-origin` header set, and sending `POST` requests from browser would be forbidden
+
+## GITHUB PAGES SUPPORT
+
+Exported .zip file could be extracted and uploaded to Github pages. However, to enable Mathjax support on Github pages, upload the `_config.yml` file and `head-custom.html` in `_includes/`. A theme supporting `_includes/head-custom.html` is required.
 
 ## LICENSE
 

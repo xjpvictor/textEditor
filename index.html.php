@@ -88,7 +88,7 @@ input[type="text"],input[type="password"],input[type="email"]{appearance:none;-w
 #textEditorPreview,#edit-preview-wrap{height:auto !important;}
 #edit-preview{min-height:50vh !important;}
 #textEditorPreview{margin-top:20px;margin-bottom:20px;}
-#textEditor,#textEditorTitle,#textEditorPreview{width:100%;padding-left:0;padding-right:0;}
+#textEditor,#textEditorTitleWrap,#textEditorPreview{width:100%;padding-left:0;padding-right:0;}
 }
 
 @media screen and (max-width:450px) {
@@ -128,8 +128,8 @@ input[type="text"],input[type="password"],input[type="email"]{appearance:none;-w
 
 </div>
 
-<div id="textEditorTitle" class="textLeft borderBox halfWidth paddingTextLeftRight" style="padding-bottom:2em;">
-<input type="text" class="fullWidth" placeholder="Enter file name for .md" value="<?php echo (isset($_GET[$editor_link_parameter['filename']]) && $_GET[$editor_link_parameter['filename']] ? htmlentities($_GET[$editor_link_parameter['filename']]) : ''); ?>" />
+<div id="textEditorTitleWrap" class="textLeft borderBox halfWidth paddingTextLeftRight" style="padding-bottom:2em;">
+<input type="text" id="textEditorTitle" class="fullWidth" placeholder="Enter file name for .md" value="<?php echo (isset($_GET[$editor_link_parameter['filename']]) && $_GET[$editor_link_parameter['filename']] ? htmlentities($_GET[$editor_link_parameter['filename']]) : ''); ?>" />
 <p class="hideOnDesktop hideOnWideScreen small"><br>Visit <a class="noUnderline small" href='<?php echo ($c = $url.'/?'.$edit_uid_parameter.'='.$edit_uid); ?>'><?php echo htmlentities($c); ?></a> on other device to continue your work...</p>
 </div>
 <div class="clear"></div>
@@ -229,7 +229,7 @@ function outerHeight(elem) {
 function editorSetHeight() {
   setTimeout(function() {
     if (window.innerWidth > 800) {
-      var vh = window.innerHeight - document.getElementById('h1').offsetHeight - document.getElementById('textEditorTitle').offsetHeight - 20;
+      var vh = window.innerHeight - document.getElementById('h1').offsetHeight - document.getElementById('textEditorTitleWrap').offsetHeight - 20;
       document.getElementById('edit-textarea').style.height = (vh - document.getElementById('edit-buttons').offsetHeight - document.getElementById('edit-title').offsetHeight - document.getElementById('edit-status-bar').offsetHeight - 1 - 20) + 'px';
       document.getElementById('textEditorPreview').style.height = (vh) + 'px';
       document.getElementById('edit-preview-wrap').style.height = (vh - outerHeight(document.getElementById('textEditorPreview').children[0]) - outerHeight(document.getElementById('textEditorPreview').children[1])) + 'px';

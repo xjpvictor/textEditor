@@ -132,23 +132,32 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
   polyfillscript.crossOrigin = 'anonymous';
   document.body.appendChild(polyfillscript);
   MathJax = {
-    //loader: {
-    //  load: ['']
-    //},
+    loader: {
+      load: ['[tex]/autoload']
+    },
     tex: {
-      //packages: {
-      //},
+      packages: {
+        '[+]': ['autoload']
+      },
       inlineMath: [['\\(', '\\)']]
     },
     svg: {
       fontCache: 'global'
+    },
+    chtml: {
+      scale: 1.1,
+      minScale: .5,
+      mtextFont: '',
+      unknownFamily: 'serif',
+      mathmlSpacing: false,
+      exFactor: .5
     }
   };
   var mathjaxscript = document.createElement('script');
   mathjaxscript.type = 'text/javascript';
   mathjaxscript.id = 'MathJax-script';
   mathjaxscript.async = true;
-  mathjaxscript.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg-full.js';
+  mathjaxscript.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js';
   mathjaxscript.crossOrigin = 'anonymous';
   document.body.appendChild(mathjaxscript);
 
