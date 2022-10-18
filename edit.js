@@ -778,11 +778,15 @@ function editexport(download = true) {
 function savepdf() {
   var images = editpreview.querySelectorAll('img, svg');
   for (i = 0; i < images.length; i++) {
-    images[i].setAttribute('style', 'max-width: 600px;');
+    images[i].dataset.width = images[i].getAttribute('width') || 0;
+    images[i].setAttribute('width', '600px');
   }
   html2pdf().set(pdfopt).from(editpreview).save().then(function(){
     for (i = 0; i < images.length; i++) {
-      images[i].removeAttribute('style');
+      if (images[i].dataset.width)
+        images[i].setAttribute('width', images[i].dataset.width);
+      else
+        images[i].removeAttribute('width');
     }
   });
 }
