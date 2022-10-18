@@ -34,6 +34,7 @@
     <span id-title="Add &amp;lt;span&amp;gt;" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;span&gt;', '&lt;/span&gt;')">&lt;span&gt;</span>
     <span id-title="Set class" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;span class=&quot;&quot;&gt;', '&lt;/span&gt;')">class</span>
     <span id-title="Set style" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;span style=&quot;&quot;&gt;', '&lt;/span&gt;')">style</span>
+    <span id-title="Add diagram" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="mdAddStyle('&lt;div class=&quot;mermaid&quot;&gt;', '&lt;/div&gt;')">&lt;diagram&gt;</span>
     <div class="edit-clear">&nbsp;</div>
 
     </div>
@@ -109,7 +110,7 @@
   <div id="edittextareasnapwrap"><p id="edittextareasnap"></p><div id="edittextareasnaplocator"></div></div>
   <div id="edit-textarea-shader-top"></div>
   <div id="edit-textarea-shader-bottom"></div>
-  <textarea id="edit-textarea" autocomplete="off" autocorrect="off"></textarea>
+  <textarea id="edit-textarea" autocomplete="off" autocorrect="off" onpaste="pasteImage(event);"></textarea>
   <!-- End of Textarea -->
 
   <!-- Status bar -->

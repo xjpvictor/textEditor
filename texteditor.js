@@ -162,6 +162,18 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
   document.body.appendChild(mathjaxscript);
 
   /*
+   * Mermaid
+   */
+
+  var mermaidscript = document.createElement('script');
+  mermaidscript.type = 'text/javascript';
+  mermaidscript.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js';
+  document.body.appendChild(mermaidscript);
+  mermaidscript.onload = function() {
+    mermaid.initialize({ startOnLoad: false });
+  };
+
+  /*
    * Load texteditor.html
    */
 

@@ -281,6 +281,26 @@ function editSyntaxHighlight() {
   }
 }
 
+// diagram in preview
+
+function editShowDiagram() {
+  var elems = editpreview.getElementsByClassName('mermaid'), n = elems.length;
+  for (i = 0; i < n; i++) {
+    var diagram = elems[i];
+    var sibling = diagram.nextElementSibling;
+    diagram.id = "mermaid-" + i;
+    var txt = document.createElement("textarea");
+    txt.innerHTML = diagram.innerHTML;
+    var graphDefinition = txt.value;
+    txt.remove();
+    var diagramInsertSvg = function (svgCode, bindFunctions) {
+      diagram.innerHTML = svgCode;
+      sibling.parentNode.insertBefore(diagram, sibling);
+    }
+    mermaid.mermaidAPI.render(diagram.id, graphDefinition, diagramInsertSvg);
+  }
+}
+
 // image in preview
 
 function editshowPreviewImageNotFound(html) {
@@ -321,6 +341,7 @@ function editshowPreviewImageNotFound(html) {
       editautoUpdate();
       editSyntaxHighlight();
       MathJax.typeset();
+      editShowDiagram();
       //renderMathInElement(editpreview);
     },10);
 
@@ -628,6 +649,29 @@ function uploadFileSelectHandlerFileReader(files, i, n, fn, input, preview = 0) 
   }else
     reader.readAsArrayBuffer(f);
 
+}
+
+// Paste image
+
+function pasteImage(event) {
+  var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+  if (typeof items !== "undefined" && items.length) {
+    var blob = items[0].getAsFile();
+    if (blob) {
+      var reader = new FileReader();
+      reader.onload = function(event){
+        var d = event.target.result;
+        var type = d.substring(d.indexOf(':')+1, d.indexOf(';'));
+        if (type.indexOf('image/') == 0) {
+          var ext = type.substring(type.indexOf('/')+1);
+          var filename = 'clipboard-' + Math.round(+new Date()/1000) + '.' + ext;
+          var f = new File([blob], filename, {type: type});
+          uploadFileSelectHandlerFileReader([f], 0, 1, false, false, true);
+        }
+      }
+      reader.readAsDataURL(blob);
+    }
+  }
 }
 
 // Save
