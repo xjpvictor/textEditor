@@ -125,6 +125,7 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor #edit-preview .edit-previewnoimagename{color:#000;}
 .textEditor #edit-preview p:empty{display:none;}
 .textEditor #edit-preview figure p{padding:0;margin:0;}
+.textEditor #edit-preview figure figcaption,.textEditor #edit-preview figure figcaption *{color:#999;}
 .textEditor #edit-preview p.edit-positioners{display:block !important;width:0 !important;height:0 !important;margin:0 !important;padding:0 !important;}
 .textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners){position:relative;}
 .textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners):before{content:'';display:block;width:0;height:100%;position:absolute;top:0;left:-1px;z-index:2;border-left:3px solid #ff6500eb;}
@@ -134,7 +135,7 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor #edit-preview .edit-position-buttons:after{content:'';display:none;width:10px;height:10px;position:absolute;background:rgba(255,101,0,.5);border-radius:50%;right:5px;top:5px;z-index:2;border:.5px solid rgba(255,101,0,.8);box-shadow:0 0 1px 1px rgba(255,101,0,.3);}
 .textEditor #edit-preview .edit-position-buttons:hover:after{display:block;cursor:pointer;}
 .textEditor #edit-preview .katex{font-size:1.1em;}
-.textEditor #edit-preview img{max-width:100%;}
+.textEditor #edit-preview img,.textEditor #edit-preview svg{max-width:100%;}
 
 /*
  * Mobile device

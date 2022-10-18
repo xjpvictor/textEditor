@@ -775,6 +775,18 @@ function editexport(download = true) {
 
 }
 
+function savepdf() {
+  var images = editpreview.querySelectorAll('img, svg');
+  for (i = 0; i < images.length; i++) {
+    images[i].setAttribute('style', 'max-width: 600px;');
+  }
+  html2pdf().set(pdfopt).from(editpreview).save().then(function(){
+    for (i = 0; i < images.length; i++) {
+      images[i].removeAttribute('style');
+    }
+  });
+}
+
 // Auto scroll preview
 
 var editautoScrollCurrentElementId = '';
