@@ -174,23 +174,6 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
   };
 
   /*
-   * html2pdf
-   */
-
-  var pdfscript = document.createElement('script');
-  pdfscript.type = 'application/javascript';
-  pdfscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js';
-  document.head.appendChild(pdfscript);
-  var pdfopt = {
-    margin: 1,
-    filename: 'myfile.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' },
-    pagebreak: { mode: ['avoid-all'] }
-  };
-
-  /*
    * Load texteditor.html
    */
 

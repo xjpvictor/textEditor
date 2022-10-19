@@ -177,3 +177,12 @@ body.texteditor-mobile-device .textEditor #edit-preview .edit-preview-caret-curr
 @media screen and (max-width:450px) {
 .textEditor .edit-imageuploaderunsplashImageWrappers{width:49%;padding-top:49%;}
 }
+
+@media print {
+html,body{height:auto;max-height:unset;}
+.textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners):before{border-left:none;}
+.textEditor #edit-preview .edit-position-buttons:after{display:none !important;}
+#h1,#textEditorTitleWrap,#textEditor,.uid-qr,#textEditorPreview>h2,#textEditorPreview>hr{display:none;}
+#textEditorPreview{width:auto !important;height:auto !important;}
+#edit-preview-wrap{height:auto !important;}
+}
