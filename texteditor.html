@@ -123,6 +123,7 @@
     <span class="edit-previewnoimagename edit-upload-drop edit-button edit-pointer" id-title="Import" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')"><span class="edit-upload-button-wrap edit-pointer"><span class="edit-upload-button edit-pointer">&#128228;</span><span class="edit-upload-file-button-wrap edit-pointer"><input type="file" multiple accept="" class="edit-upload-file-button edit-pointer" name="files[]" onchange="uploadFileSelectHandler(event, this, true);"></span><span class="edit-clear">&nbsp;</span></span></span>
     <span id-title="Save" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="editexport();">&#128190;</span>
     <span id-title="Export PDF" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="window.print();">&#128196;</span>
+    <span id-title="Mindmap mode" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title')+': '+(editpreviewmindmap ? 'On' : 'Off'))" onmouseout="mdTitle('')" onclick="toggleMindmap(this);">&#10058;</span>
     <span id-title="Preview" id="edit-form-toggle-off" class="edit-button edit-pointer" onmouseover="mdTitle(this.getAttribute('id-title'))" onmouseout="mdTitle('')" onclick="editFormToggle(0);">&#128506;</span>
   </div>
 

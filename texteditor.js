@@ -174,6 +174,21 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
   };
 
   /*
+   * Markmap
+   */
+
+  window.markmap = {
+    autoLoader: {
+      manual: true
+      //transformPlugins: []
+    },
+  };
+  var markmapscript = document.createElement('script');
+  markmapscript.type = 'text/javascript';
+  markmapscript.src = 'https://cdn.jsdelivr.net/npm/markmap-autoloader';
+  document.body.appendChild(markmapscript);
+
+  /*
    * Load texteditor.html
    */
 

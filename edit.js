@@ -26,6 +26,8 @@ const editpreviewpositionbuttonclass = 'edit-position-buttons';
 const editpreviewcaretcurrentclassname = 'edit-preview-caret-current';
 var editpreviewpositions = [0];
 
+var editpreviewmindmap = false;
+
 const edittextarealineheight = parseFloat(document.defaultView.getComputedStyle(edittextarea,'').getPropertyValue('line-height'));
 const editpreviewscrollthreshold = 50;
 var edithtmlbodyoverflowystyle;
@@ -301,6 +303,28 @@ function editShowDiagram() {
   }
 }
 
+// Mindmap in preview
+
+function toggleMindmap(button) {
+
+  if (button.dataset.active == "1") {
+
+    button.classList.remove('active');
+    button.classList.remove('red');
+    button.dataset.active = 0;
+    editpreviewmindmap = 0;
+
+  } else {
+
+    button.classList.add('active');
+    button.classList.add('red');
+    button.dataset.active = 1;
+    editpreviewmindmap = 1;
+
+  }
+
+}
+
 // image in preview
 
 function editshowPreviewImageNotFound(html) {
@@ -312,38 +336,47 @@ function editshowPreviewImageNotFound(html) {
 
   if (editpreview.innerHTML !== '<div>'+str+'</div>') {
 
-    regstr = '(<p class="'+editpreviewpositionerclass+'" id="'+editpreviewpositioneridprefix+'[0-9]+" data-edit-position="([0-9]+)"></p>)([\r\n]*';
-    var reg = new RegExp(regstr + '<[a-z0-9]+)([^>]*>)', 'gmi');
-    var reg_filter = new RegExp(regstr + '</[a-z0-9]+>)', 'gmi');
+    if (editpreviewmindmap !== 1) {
 
-    previewhtml = str.replace(reg, function(match, p1, p2, p3, p4) {
-      cls = p4.trim().match(/(^| )+class="([^\"]*)"/);
-      if (null !== cls && null !== cls[2])
-        cls = cls[2];
-      else
-        cls = '';
-      return p1+p3+' class="'+editpreviewpositionbuttonclass+' '+cls+'" data-edit-position="'+p2+'" onclick="if(editLargeScreen()){mdFocus('+p2+','+p2+');setTimeout(function(){edittextarea.focus();},10);}" ' + p4.trim().replace(/(^| )*class="[^\"]*"/, '');
-    }).replace(reg_filter, function(match, p1, p2, p3) {
-      if (p2 == '-1')
-        return match;
-      var i = editpreviewpositions.indexOf(parseInt(p2));
-      if (i > -1)
-        editpreviewpositions.splice(i, 1);
-      return p3;
-    });
-    if (typeof editpreview.children != 'undefined' && null !== editpreview.children && editpreview.children.length)
-      editpreview.removeChild(editpreview.children[0]);
-    editautoScrollCurrentElementId = '';
-    var elem = document.createElement('div');
-    elem.innerHTML = previewhtml;
-    editpreview.appendChild(elem);
-    setTimeout(function(){
-      editautoUpdate();
-      editSyntaxHighlight();
-      MathJax.typeset();
-      editShowDiagram();
-      //renderMathInElement(editpreview);
-    },10);
+      regstr = '(<p class="'+editpreviewpositionerclass+'" id="'+editpreviewpositioneridprefix+'[0-9]+" data-edit-position="([0-9]+)"></p>)([\r\n]*';
+      var reg = new RegExp(regstr + '<[a-z0-9]+)([^>]*>)', 'gmi');
+      var reg_filter = new RegExp(regstr + '</[a-z0-9]+>)', 'gmi');
+
+      previewhtml = str.replace(reg, function(match, p1, p2, p3, p4) {
+        cls = p4.trim().match(/(^| )+class="([^\"]*)"/);
+        if (null !== cls && null !== cls[2])
+          cls = cls[2];
+        else
+          cls = '';
+        return p1+p3+' class="'+editpreviewpositionbuttonclass+' '+cls+'" data-edit-position="'+p2+'" onclick="if(editLargeScreen()){mdFocus('+p2+','+p2+');setTimeout(function(){edittextarea.focus();},10);}" ' + p4.trim().replace(/(^| )*class="[^\"]*"/, '');
+      }).replace(reg_filter, function(match, p1, p2, p3) {
+        if (p2 == '-1')
+          return match;
+        var i = editpreviewpositions.indexOf(parseInt(p2));
+        if (i > -1)
+          editpreviewpositions.splice(i, 1);
+        return p3;
+      });
+      if (typeof editpreview.children != 'undefined' && null !== editpreview.children && editpreview.children.length)
+        editpreview.removeChild(editpreview.children[0]);
+      editautoScrollCurrentElementId = '';
+      var elem = document.createElement('div');
+      elem.innerHTML = previewhtml;
+      editpreview.appendChild(elem);
+      setTimeout(function(){
+        editautoUpdate();
+        editSyntaxHighlight();
+        MathJax.typeset();
+        editShowDiagram();
+        //renderMathInElement(editpreview);
+      },10);
+
+    } else {
+
+      editpreview.innerHTML = edittextarea.value.substring(edittextarea.value.indexOf('...')+5);
+      markmap.autoLoader.render(editpreview);
+
+    }
 
     wstr = editpreview.innerHTML.trim().replace(/<[^>]+>/gmi, '').trim();
     document.getElementById('edit-status-word-count').innerHTML = 'Word: ' + (!wstr.length ? 0 : wstr.split(/[\r\n\t\s]+/gmi).length) + ' Characters: ' + wstr.replace(/[\r\n]+[\s\t]+/gmi, '').replace(/[\s\t]+[\r\n]+/gmi, '').replace(/[\t]+/gmi, ' ').replace(/[\r\n]+/gmi, '').length;
