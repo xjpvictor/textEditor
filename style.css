@@ -73,11 +73,11 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor #edit-options #edit-custom-buttons .edit-button{font-size:13px;}
 
 /* status bar */
-.textEditor #edit-status-bar{font-size:12px;color:#888;padding-top:1px;padding-bottom:1px;padding-right:120px;margin-right:-120px;float:left;}
+.textEditor #edit-status-bar{font-size:12px;color:#888;padding-top:1px;padding-bottom:1px;padding-right:150px;margin-right:-150px;float:left;}
 .textEditor #edit-status-bar .edit-status{font-size:inherit;}
 
 /* file options */
-.textEditor #edit-file-options{float:right;width:120px;height:25px;padding:0 0 0 5px;}
+.textEditor #edit-file-options{float:right;width:150px;height:25px;padding:0 0 0 5px;}
 .textEditor #edit-file-options .edit-button{float:right;line-height:25px;font-size:16px;}
 .textEditor #edit-file-options .edit-button.edit-upload-drop .edit-upload-button{padding:0;line-height:22px;}
 
@@ -136,7 +136,7 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor #edit-preview .edit-position-buttons:hover:after{display:block;cursor:pointer;}
 .textEditor #edit-preview .katex{font-size:1.1em;}
 .textEditor #edit-preview img,.textEditor #edit-preview svg{max-width:100%;}
-.textEditor #edit-preview svg.markmap{width:100%;height:60vh;}
+.textEditor #edit-preview svg.markmap{width:100%;max-width:600px;height:60vh;}
 .textEditor .edit-button.red{color:#d42;}
 
 /*
@@ -183,8 +183,8 @@ body.texteditor-mobile-device .textEditor #edit-preview .edit-preview-caret-curr
 @media print {
 html,body{height:auto;max-height:unset;}
 .textEditor #edit-preview .edit-preview-caret-current:not(.edit-positioners):before{border-left:none;}
-.textEditor #edit-preview .edit-position-buttons:after{display:none !important;}
+.textEditor #edit-preview:after,.textEditor #edit-preview .edit-position-buttons:after{display:none !important;}
 #h1,#textEditorTitleWrap,#textEditor,.uid-qr,#textEditorPreview>h2,#textEditorPreview>hr{display:none;}
-#textEditorPreview{width:auto !important;height:auto !important;}
+#textEditorPreview{width:auto !important;height:auto !important;float:none !important;}
 #edit-preview-wrap{height:auto !important;}
 }
