@@ -179,8 +179,8 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
 
   window.markmap = {
     autoLoader: {
-      manual: true
-      //transformPlugins: []
+      manual: true,
+      transformPlugins: []
     },
   };
   var markmapscript = document.createElement('script');
