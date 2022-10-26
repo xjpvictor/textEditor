@@ -323,6 +323,9 @@ function toggleMindmap(button) {
 
   }
 
+  mdTitle(button.getAttribute('id-title')+': '+(editpreviewmindmap ? 'On' : 'Off'))
+  editshowPreview();
+
 }
 
 // image in preview
@@ -373,7 +376,7 @@ function editshowPreviewImageNotFound(html) {
 
     } else {
 
-      editpreview.innerHTML = edittextarea.value.substring(edittextarea.value.indexOf('...')+5);
+      editpreview.innerHTML = (edittextarea.value.trim().indexOf('---') === 0 ? edittextarea.value.substring(edittextarea.value.indexOf('...')+5) : edittextarea.value);
       markmap.autoLoader.render(editpreview);
 
     }

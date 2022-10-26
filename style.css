@@ -73,11 +73,11 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor #edit-options #edit-custom-buttons .edit-button{font-size:13px;}
 
 /* status bar */
-.textEditor #edit-status-bar{font-size:12px;color:#888;padding-top:1px;padding-bottom:1px;padding-right:150px;margin-right:-150px;float:left;}
+.textEditor #edit-status-bar{font-size:12px;color:#888;padding-top:1px;padding-bottom:1px;padding-right:200px;margin-right:-200px;float:left;}
 .textEditor #edit-status-bar .edit-status{font-size:inherit;}
 
 /* file options */
-.textEditor #edit-file-options{float:right;width:150px;height:25px;padding:0 0 0 5px;}
+.textEditor #edit-file-options{float:right;width:200px;height:25px;padding:0 0 0 5px;}
 .textEditor #edit-file-options .edit-button{float:right;line-height:25px;font-size:16px;}
 .textEditor #edit-file-options .edit-button.edit-upload-drop .edit-upload-button{padding:0;line-height:22px;}
 
