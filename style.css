@@ -136,7 +136,7 @@ input.edit-input-submit{appearance:none;-webkit-appearance:none;-moz-appearance:
 .textEditor #edit-preview .edit-position-buttons:hover:after{display:block;cursor:pointer;}
 .textEditor #edit-preview .katex{font-size:1.1em;}
 .textEditor #edit-preview img,.textEditor #edit-preview svg{max-width:100%;}
-.textEditor #edit-preview svg.markmap{width:100%;max-width:600px;height:60vh;}
+.textEditor #edit-preview svg.markmap{width:100%;height:100%;}
 .textEditor .edit-button.red{color:#d42;}
 
 /*
