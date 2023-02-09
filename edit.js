@@ -227,6 +227,10 @@ function mdAddStyle(str, closing = false, remove = true) {
     d = d-str.length;
   } else {
     // Add str
+    if ((str == '[' || str == '(' || str == '{') && edittextarea.value.substring(a, a-2) == '\\\\') {
+      str += ' ';
+      closing = ' \\\\' + closing;
+    }
     edittextarea.value = mdTextTrim(edittextarea.value.substring(0,a) + str + edittextarea.value.substring(a,d) + (closing !== false ? closing : str) + edittextarea.value.substring(d));
     a = a+str.length;
     d = d+str.length;
@@ -1056,6 +1060,12 @@ function editautoUpdate() {
       // Save caret position
       window.localStorage.setItem(editstoragecaretpositionname, (edittextarea.selectionDirection == 'forward' ? edittextarea.selectionEnd : edittextarea.selectionStart));
     }
+
+    // Update _ to \_ in formula
+    i = edittextarea.selectionStart;
+    o = edittextarea.selectionEnd;
+    edittextarea.value = edittextarea.value.replaceAll(/(\\\\\[|\\\\\(|\\\\{)((?:.(?!\\\\\]|\\\\\)|\\\\}))*)(?<!\\)_/gmi, function(match, p1, p2) { return p1 + p2 + '\\_'; });
+    mdFocus(i, o);
 
     if (typeof edittextarea.dataset.value == 'undefined' || null === edittextarea.dataset.value || edittextarea.dataset.value !== edittextarea.value.trim()) {
       // Update preview
