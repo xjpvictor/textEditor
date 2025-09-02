@@ -139,10 +139,6 @@ input[type="text"],input[type="password"],input[type="email"]{appearance:none;-w
   data-texteditor-url="<?php echo $url; ?>"
   data-mobile-device-width="800"
 
-  data-zip-uploader-url="https://file.io"
-  data-zip-uploader-parameter="file"
-  data-zip-uploader-credential="false"
-
   data-zip-url="<?php echo (isset($_GET[$editor_link_parameter['url']]) && $_GET[$editor_link_parameter['url']] ? htmlentities($_GET[$editor_link_parameter['url']]) : (file_exists($edit_zip_url_file) ? htmlentities(file_get_contents($edit_zip_url_file)) : '')); ?>"
   data-zip-url-credential="<?php echo (isset($_GET[$editor_link_parameter['url_credential']]) && $_GET[$editor_link_parameter['url_credential']] ? htmlentities($_GET[$editor_link_parameter['url_credential']]) : 'false'); ?>"
   data-zip-url-lastmod="<?php echo (isset($_GET[$editor_link_parameter['url']]) && $_GET[$editor_link_parameter['url']] ? '' : (file_exists($edit_zip_url_file) ? filemtime($edit_zip_url_file) : '')); ?>"

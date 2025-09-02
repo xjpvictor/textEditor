@@ -741,10 +741,6 @@ function editGetMdTitle(show_default = true) {
   return (editmdtitle && typeof editmdtitle.value != 'undefined' && null !== editmdtitle.value && editmdtitle.value ? editGetMdSuffix(editmdtitle.value) : (show_default ? 'post.md' : ''));
 }
 
-function editUploadZip() {
-  return (window.fetch && typeof texteditor.dataset.zipUploaderUrl != 'undefined' && null !== texteditor.dataset.zipUploaderUrl && texteditor.dataset.zipUploaderUrl ? texteditor.dataset.zipUploaderUrl : false);
-}
-
 function editdownload(blob, name) {
 
   var type = blob.type;
@@ -812,35 +808,7 @@ function editexport(download = true) {
           var d = new Date();
           var fn = "textEditor_export_"+d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+".zip";
 
-          if ((url = editUploadZip())) {
-            var f = new FormData();
-            f.append((typeof texteditor.dataset.zipUploaderParameter != 'undefined' && null !== texteditor.dataset.zipUploaderParameter && texteditor.dataset.zipUploaderParameter ? texteditor.dataset.zipUploaderParameter : 'file'), blob);
-            const option = {
-              method: "POST",
-              body: f
-            }
-            if (typeof texteditor.dataset.zipUploaderCredential != 'undefined' && null !== texteditor.dataset.zipUploaderCredential && texteditor.dataset.zipUploaderCredential == 'true')
-              option['credentials'] = 'include';
-            fetch(url, option)
-            .then(res => res.json())
-            .then(result => {
-
-              if (window.localStorage) {
-                var t = new Date();
-                window.localStorage.setItem(editstorageziplastmodname, Math.floor(t.getTime() / 1000));
-              }
-
-              if (typeof editZipUploaderCallbackFunc != 'undefined' && null !== editZipUploaderCallbackFunc && isFunction(editZipUploaderCallbackFunc))
-                editZipUploaderCallbackFunc(JSON.stringify(result));
-
-              if (download)
-                editdownload(blob, fn);
-
-            })
-            .catch((error) => {
-              console.log('Error: ', error);
-            });
-          } else if (download)
+          if (download)
             editdownload(blob, fn);
 
         });
