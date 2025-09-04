@@ -391,7 +391,7 @@ function editshowPreviewImageNotFound(html) {
       setTimeout(function(){
         editautoUpdate();
         editSyntaxHighlight();
-        MathJax.typeset();
+        MathJax.typesetPromise();
         editShowDiagram();
         //renderMathInElement(editpreview);
       },10);
@@ -1122,7 +1122,7 @@ if (window.indexedDB) {
     editdb = e.target.result;
     var request = editdbtxn(editdbmdstorename);
     request.get(1).onsuccess = function(e) {
-      if (typeof e.target.result.text != 'undefined' && null !== e.target.result.text)
+      if (typeof e.target.result != 'undefined' && null !== e.target.result && typeof e.target.result.text != 'undefined' && null !== e.target.result.text)
         edittextarea.value = mdTextTrim(e.target.result.text.trim());
       mdFocus((window.localStorage && null !== (cp = window.localStorage.getItem(editstoragecaretpositionname)) && !isNaN(parseInt(cp)) && cp >= 0 && cp <= edittextarea.value.length ? cp : 0));
       setTimeout(function(){edittextarea.blur();edittextarea.focus();},10);

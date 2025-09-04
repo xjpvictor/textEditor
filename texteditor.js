@@ -126,11 +126,11 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
    * Load MathJax
    */
 
-  var polyfillscript = document.createElement('script');
-  polyfillscript.type = 'text/javascript';
-  polyfillscript.src = 'https://polyfill.io/v3/polyfill.min.js?features=es6';
-  polyfillscript.crossOrigin = 'anonymous';
-  document.body.appendChild(polyfillscript);
+  //var polyfillscript = document.createElement('script');
+  //polyfillscript.type = 'text/javascript';
+  //polyfillscript.src = 'https://polyfill.io/v3/polyfill.min.js?features=es6';
+  //polyfillscript.crossOrigin = 'anonymous';
+  //document.body.appendChild(polyfillscript);
   MathJax = {
     loader: {
       load: ['[tex]/autoload']
@@ -157,7 +157,7 @@ if (typeof texteditor != 'undefined' && null !== texteditor && texteditor && typ
   mathjaxscript.type = 'text/javascript';
   mathjaxscript.id = 'MathJax-script';
   mathjaxscript.async = true;
-  mathjaxscript.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js';
+  mathjaxscript.src = 'https://cdn.jsdelivr.net/npm/mathjax/tex-chtml.js';
   mathjaxscript.crossOrigin = 'anonymous';
   document.body.appendChild(mathjaxscript);
 
